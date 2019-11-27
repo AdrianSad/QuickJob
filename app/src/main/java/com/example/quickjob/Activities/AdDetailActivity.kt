@@ -1,24 +1,25 @@
 package com.example.quickjob.Activities
 
-import android.net.Uri
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
 import com.bumptech.glide.Glide
 import com.example.quickjob.R
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthProvider
-import com.google.firebase.auth.FirebaseUser
+import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.firebase.firestore.FirebaseFirestore
 import de.hdodenhof.circleimageview.CircleImageView
+import java.io.File
 
 class AdDetailActivity : AppCompatActivity() {
 
-    lateinit var postImg : ImageView
     lateinit var userImg : CircleImageView
-    lateinit var title : TextView
     lateinit var desc : TextView
     lateinit var location : TextView
     lateinit var payment : TextView
@@ -31,9 +32,9 @@ class AdDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ad_detail)
 
-        postImg = findViewById(R.id.ad_detail_img)
+        val toolbarImg : ImageView = findViewById(R.id.ad_detail_img)
+        val toolbar : Toolbar = findViewById(R.id.ad_detail_toolbar)
         userImg = findViewById(R.id.ad_detail_user_img)
-        title = findViewById(R.id.ad_detail_title)
         desc = findViewById(R.id.ad_detail_desc)
         location = findViewById(R.id.ad_detail_location)
         payment = findViewById(R.id.ad_detail_payment)
@@ -43,11 +44,17 @@ class AdDetailActivity : AppCompatActivity() {
         userName = findViewById(R.id.ad_detail_user_name)
         val firebaseFirestore = FirebaseFirestore.getInstance()
 
+        setSupportActionBar(toolbar)
+
         val adImg: String = intent.extras.getString("img")
-        Glide.with(this).load(adImg).into(postImg)
+       /* val bitMap: Bitmap = BitmapFactory.decodeFile(adImg)
+        val drawableImg: Drawable = BitmapDrawable(bitMap)
+        toolbarImg.background = drawableImg*/
+
+        Glide.with(this).load(adImg).into(toolbarImg)
 
         val adTitle : String = intent.extras.getString("title")
-        title.text = adTitle
+        toolbar.title = adTitle
 
         val adDesc: String = intent.extras.getString("desc")
         desc.text = adDesc

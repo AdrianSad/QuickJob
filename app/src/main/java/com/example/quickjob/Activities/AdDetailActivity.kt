@@ -6,6 +6,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -16,6 +17,9 @@ import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.firebase.firestore.FirebaseFirestore
 import de.hdodenhof.circleimageview.CircleImageView
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.math.log
 
 class AdDetailActivity : AppCompatActivity() {
 
@@ -27,6 +31,7 @@ class AdDetailActivity : AppCompatActivity() {
     lateinit var phoneBtn : Button
     lateinit var category : TextView
     lateinit var userName : TextView
+    lateinit var date : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +45,7 @@ class AdDetailActivity : AppCompatActivity() {
         payment = findViewById(R.id.ad_detail_payment)
         msgBtn = findViewById(R.id.ad_detail_msg_btn)
         phoneBtn = findViewById(R.id.ad_detail_phone_btn)
+        date = findViewById(R.id.ad_detail_date)
         category = findViewById(R.id.ad_detail_category)
         userName = findViewById(R.id.ad_detail_user_name)
         val firebaseFirestore = FirebaseFirestore.getInstance()
@@ -47,16 +53,13 @@ class AdDetailActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         val adImg: String = intent.extras.getString("img")
-       /* val bitMap: Bitmap = BitmapFactory.decodeFile(adImg)
-        val drawableImg: Drawable = BitmapDrawable(bitMap)
-        toolbarImg.background = drawableImg*/
-
         Glide.with(this).load(adImg).into(toolbarImg)
 
         val adTitle : String = intent.extras.getString("title")
         toolbar.title = adTitle
 
         val adDesc: String = intent.extras.getString("desc")
+        Log.d("desc",adDesc)
         desc.text = adDesc
 
         val adCat : String = intent.extras.getString("category")
@@ -67,6 +70,11 @@ class AdDetailActivity : AppCompatActivity() {
 
         val adLocation : String = intent.extras.getString("location")
         location.text = adLocation
+
+
+        val adDate:String = SimpleDateFormat().format(Date(intent.extras.getLong("timestamp")))
+        date.text = adDate
+
 
         val userID : String = intent.extras.getString("user")
         firebaseFirestore.collection("users").document(userID).get().addOnSuccessListener {

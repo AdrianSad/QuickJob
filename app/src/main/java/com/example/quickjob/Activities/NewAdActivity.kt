@@ -105,7 +105,7 @@ class NewAdActivity : AppCompatActivity() {
 
                             val adData = hashMapOf<String,Any>(
                                 "title" to title,
-                                "description" to desc,
+                                "desc" to desc,
                                 "time" to FieldValue.serverTimestamp(),
                                 "img" to downloadUrl,
                                 "location" to location,

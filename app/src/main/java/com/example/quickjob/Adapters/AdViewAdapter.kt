@@ -75,7 +75,29 @@ class AdViewAdapter(private var context: Context, list: ArrayList<Advertisement>
 
         //}
 
+        viewHolder.mainContainer.setOnClickListener {
 
+            var miliseconds: Long = 0
+            try {
+                miliseconds = adList[position].time?.time!!
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+
+            Log.d("desc", adList[position].desc)
+            val detailIntent: Intent = Intent(context,AdDetailActivity::class.java)
+            detailIntent.putExtra("title", adList[position].title)
+            detailIntent.putExtra("desc",adList[position].desc)
+            detailIntent.putExtra("timestamp",miliseconds)
+            detailIntent.putExtra("category",adList[position].category)
+            detailIntent.putExtra("payment",adList[position].payment)
+            detailIntent.putExtra("img",adList[position].img)
+            detailIntent.putExtra("user",adList[position].user)
+            detailIntent.putExtra("location",adList[position].location)
+
+            context.startActivity(detailIntent)
+
+        }
 
     }
 
@@ -88,30 +110,6 @@ class AdViewAdapter(private var context: Context, list: ArrayList<Advertisement>
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 
-        val viewHolder : MyViewHolder = MyViewHolder(view)
-
-        viewHolder.mainContainer.setOnClickListener {
-
-            var miliseconds: Long = 0
-            try {
-                miliseconds = adList[p1].time?.time!!
-            }catch (e: Exception){
-                e.printStackTrace()
-            }
-
-            val detailIntent: Intent = Intent(context,AdDetailActivity::class.java)
-            detailIntent.putExtra("title", adList[p1].title)
-            detailIntent.putExtra("desc",adList[p1].desc)
-            detailIntent.putExtra("timestamp",miliseconds)
-            detailIntent.putExtra("category",adList[p1].category)
-            detailIntent.putExtra("payment",adList[p1].payment)
-            detailIntent.putExtra("img",adList[p1].img)
-            detailIntent.putExtra("user",adList[p1].user)
-            detailIntent.putExtra("location",adList[p1].location)
-
-            context.startActivity(detailIntent)
-
-        }
 
         return MyViewHolder(view)
     }

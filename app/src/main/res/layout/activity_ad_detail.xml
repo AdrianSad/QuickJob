@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".Activities.AdDetailActivity">
+
+    <ImageView
+            android:id="@+id/ad_detail_img"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_launcher_background" />
+
+    <TextView
+            android:id="@+id/ad_detail_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="TextView"
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ad_detail_img" />
+
+    <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="#2e2e2e"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ad_detail_title" />
+
+    <TextView
+            android:id="@+id/ad_detail_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="DESCRIPTION"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ad_detail_date" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ad_detail_user_img"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_avatar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ad_detail_payment" />
+
+    <Button
+            android:id="@+id/ad_detail_msg_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/btn_outline_primary_style"
+            android:drawableLeft="@drawable/ic_message_black_24dp"
+            android:drawablePadding="8dp"
+            android:drawableTint="@color/colorPrimary"
+            android:padding="8dp"
+            android:text="Send message"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintStart_toEndOf="@+id/ad_detail_user_img"
+            app:layout_constraintTop_toBottomOf="@+id/ad_detail_payment" />
+
+    <Button
+            android:id="@+id/ad_detail_phone_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/btn_outline_primary_style"
+            android:drawableLeft="@drawable/ic_local_phone_black_24dp"
+            android:drawablePadding="8dp"
+            android:drawableTint="@color/colorPrimary"
+            android:padding="8dp"
+            android:text="Phone"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ad_detail_msg_btn"
+            app:layout_constraintTop_toBottomOf="@+id/ad_detail_location" />
+
+    <TextView
+            android:id="@+id/ad_detail_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:text="DATE"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view" />
+
+    <TextView
+            android:id="@+id/ad_detail_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:text="Category"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ad_detail_date" />
+
+    <TextView
+            android:id="@+id/ad_detail_payment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:drawableLeft="@drawable/ic_attach_money_black_24dp"
+            android:drawablePadding="8dp"
+            android:text="Payment"
+            android:textColor="#4CAF50"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ad_detail_desc" />
+
+    <TextView
+            android:id="@+id/ad_detail_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:drawableLeft="@drawable/ic_location_on_black_24dp"
+            android:drawablePadding="8dp"
+            android:text="Location"
+            android:textColor="#F44336"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ad_detail_desc" />
+
+    <TextView
+            android:id="@+id/ad_detail_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="TextView"
+            android:textColor="@android:color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ad_detail_user_img" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,10 +3,10 @@ package com.example.quickjob.Activities
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.support.design.widget.TabLayout
-import android.support.v4.view.ViewPager
+import com.google.android.material.tabs.TabLayout
+import androidx.viewpager.widget.ViewPager
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -49,7 +49,7 @@ class IntroActivity : AppCompatActivity() {
 
         startBtn = findViewById(R.id.intro_start_btn)
         nextBtn = findViewById(R.id.intro_btn)
-        tabIndicator = findViewById(R.id.tab_indicator)
+        tabIndicator = this.findViewById(R.id.tab_indicator)
         screenPager = findViewById(R.id.intro_viewPager)
         btnAnim = AnimationUtils.loadAnimation(applicationContext,R.anim.button_animation)
 

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".Activities.SetupActivity">
+
+    <Button
+            android:id="@+id/setup_change_email_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_email_white_24dp"
+            android:drawableTint="@color/colorPrimary"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/btn_outline_primary_style"
+            android:padding="8dp"
+            android:text="Change email"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintBottom_toTopOf="@+id/setup_change_pass_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+            android:id="@+id/register_name_img2"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="72dp"
+            android:tint="@color/colorPrimary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/setup_change_img"
+            app:srcCompat="@drawable/ic_person_outline_white_24dp" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/setup_change_img"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_marginTop="32dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_avatar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/setup_change_name_field"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            app:errorEnabled="true"
+            app:hintEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/register_name_img2"
+            app:layout_constraintTop_toBottomOf="@+id/setup_change_img"
+            tools:visibility="visible">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/setup_change_name_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Change name" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/setup_change_desc_field"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:hint="Description"
+            android:visibility="visible"
+            app:counterEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/setup_change_name_field">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/setup_change_desc_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+            android:id="@+id/setup_change_submit_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/btn_style"
+            android:padding="16dp"
+            android:text="Submit"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toTopOf="@+id/setup_change_email_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+            android:id="@+id/setup_change_pass_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:drawableLeft="@drawable/ic_lock_outline_white_24dp"
+            android:drawableTint="@color/colorPrimary"
+            android:background="@drawable/btn_outline_primary_style"
+            android:padding="8dp"
+            android:text="Change password"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_style"
+            android:padding="4dp"
+            app:layout_constraintBottom_toBottomOf="@+id/setup_change_img"
+            app:layout_constraintEnd_toEndOf="@+id/setup_change_img"
+            app:layout_constraintStart_toEndOf="@+id/setup_change_img"
+            app:srcCompat="@drawable/ic_camera_alt_white_24dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

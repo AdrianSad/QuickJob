@@ -1,8 +1,9 @@
 package com.example.quickjob.Activities
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import com.example.quickjob.R
 import kotlinx.android.synthetic.main.activity_main.*
@@ -13,16 +14,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        button.setOnClickListener{
-            val mapIntent = Intent(applicationContext,MapsActivity::class.java)
-            startActivity(mapIntent)
-        }
 
-        button2.setOnClickListener{
-            val introIntent = Intent(applicationContext,IntroActivity::class.java)
-            startActivity(introIntent)
-            finish()
-        }
     }
 
 }

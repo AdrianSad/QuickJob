@@ -2,7 +2,12 @@ package com.example.quickjob.Activities
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,6 +15,7 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.*
+import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
 import com.example.quickjob.R
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.tasks.Continuation
@@ -57,7 +63,7 @@ class NewAdActivity : AppCompatActivity() {
         val descText: TextInputEditText = findViewById(R.id.new_ad_desc_text)
 
         val category: Spinner = findViewById(R.id.new_ad_spinner)
-        val doneBtn: Button = findViewById(R.id.new_ad_btn_add)
+        val doneBtn: CircularProgressButton = findViewById(R.id.new_ad_btn_add)
 
         val firebaseStorage = FirebaseStorage.getInstance()
         val firebaseFirestore: FirebaseFirestore = FirebaseFirestore.getInstance()
@@ -76,6 +82,8 @@ class NewAdActivity : AppCompatActivity() {
 
         doneBtn.setOnClickListener{
 
+            doneBtn.startAnimation()
+
             val title: String = titleText.text.toString()
             val location: String = locationText.text.toString()
             val desc: String = descText.text.toString()
@@ -86,6 +94,10 @@ class NewAdActivity : AppCompatActivity() {
                 if(imgUri == null){
 
                     showSnackBar(this,"You have to add a image!")
+                    //doneBtn.doneLoadingAnimation(Color.parseColor("#FF5555"),BitmapFactory.decodeResource(applicationContext.resources,R.drawable.ic_close_white_24dp))
+                    doneBtn.revertAnimation()
+
+
                 }else {
 
                     val randomName = UUID.randomUUID().toString()
@@ -94,6 +106,9 @@ class NewAdActivity : AppCompatActivity() {
                     val urlTask = uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>>  { task ->
                         if(!task.isSuccessful){
                             task.exception?.let {
+                                //doneBtn.doneLoadingAnimation(Color.parseColor("#FF5555"),BitmapFactory.decodeResource(applicationContext.resources,R.drawable.ic_close_white_24dp))
+                                doneBtn.revertAnimation()
+
                                 throw it
                             }
                         }
@@ -120,19 +135,27 @@ class NewAdActivity : AppCompatActivity() {
 
                                     firebaseFirestore.collection("users").document(currentUser.uid).collection("posts").add(adData).addOnCompleteListener { task ->
                                         if(task.isSuccessful)
+                                            //doneBtn.doneLoadingAnimation(Color.parseColor("#8BC34A"),BitmapFactory.decodeResource(applicationContext.resources,R.drawable.ic_done_white_24dp))
                                             finish()
                                     }
                                 }.addOnFailureListener{ exception ->
                                 Toast.makeText(applicationContext,"Adding a post error : $exception",Toast.LENGTH_LONG).show()
-                                }
+                                //doneBtn.doneLoadingAnimation(Color.parseColor("#FF5555"),BitmapFactory.decodeResource(applicationContext.resources,R.drawable.ic_close_white_24dp))
+                                doneBtn.revertAnimation()
+
+                            }
 
 
                         }else {
-                            Toast.makeText(applicationContext,"Storage error : ${it.exception}",Toast.LENGTH_LONG).show()
+                            //doneBtn.doneLoadingAnimation(Color.parseColor("#FF5555"),BitmapFactory.decodeResource(applicationContext.resources,R.drawable.ic_close_white_24dp))
+                            doneBtn.revertAnimation()
                         }
                     }
 
                 }
+            }else {
+                //doneBtn.doneLoadingAnimation(Color.parseColor("#FF5555"),(drawable))
+                doneBtn.revertAnimation()
             }
 
         }
@@ -140,6 +163,7 @@ class NewAdActivity : AppCompatActivity() {
     }
 
    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+       super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
             if(resultCode == Activity.RESULT_OK){
                 val result: CropImage.ActivityResult = CropImage.getActivityResult(data)

@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.quickjob.R
@@ -41,7 +42,7 @@ class SetupActivity : AppCompatActivity() {
         val nameText: TextInputEditText = findViewById(R.id.setup_change_name_text)
         val descField: TextInputLayout = findViewById(R.id.setup_change_desc_field)
         val descText: TextInputEditText = findViewById(R.id.setup_change_desc_text)
-        val submitBtn: Button = findViewById(R.id.setup_change_submit_btn)
+        val submitBtn: CircularProgressButton = findViewById(R.id.setup_change_submit_btn)
         val passBtn: Button = findViewById(R.id.setup_change_pass_btn)
         val emailBtn: Button = findViewById(R.id.setup_change_email_btn)
         val firebaseAuth = FirebaseAuth.getInstance()
@@ -65,6 +66,8 @@ class SetupActivity : AppCompatActivity() {
         nameText.setText(user.displayName.toString(),TextView.BufferType.EDITABLE)
 
         submitBtn.setOnClickListener { view ->
+
+            submitBtn.startAnimation()
 
             if(isNameCorrect(nameText.text.toString(),nameField) && isDescCorrect(descText.text.toString(),descField)){
 
@@ -93,10 +96,14 @@ class SetupActivity : AppCompatActivity() {
                                     finish()
                                 }else{
                                     Toast.makeText(applicationContext,"Update with image error : ${task.exception}", Toast.LENGTH_SHORT).show()
+                                    submitBtn.revertAnimation()
+
                                 }
                             }
                             }.addOnFailureListener {
                                 Toast.makeText(applicationContext,"Desc error : $it", Toast.LENGTH_SHORT).show()
+                                submitBtn.revertAnimation()
+
                             }
                         }
                     }
@@ -119,15 +126,20 @@ class SetupActivity : AppCompatActivity() {
                                     "Update error : ${task.exception}",
                                     Toast.LENGTH_SHORT
                                 ).show()
+
+                                submitBtn.revertAnimation()
                             }
                         }
 
                     }.addOnFailureListener {
                         Toast.makeText(applicationContext,"Desc error : $it", Toast.LENGTH_SHORT).show()
+                        submitBtn.revertAnimation()
                     }
 
                 }
 
+            }else{
+                submitBtn.revertAnimation()
             }
         }
 
@@ -184,6 +196,7 @@ class SetupActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
             if(resultCode == Activity.RESULT_OK){
                 val result: CropImage.ActivityResult = CropImage.getActivityResult(data)

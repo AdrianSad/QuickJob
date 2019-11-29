@@ -11,6 +11,7 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Toast
+import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
 import com.example.quickjob.R
 import com.google.firebase.auth.FirebaseAuth
 
@@ -21,7 +22,6 @@ class LoginActivity : AppCompatActivity() {
     lateinit var passwordField: TextInputLayout
     lateinit var emailText: TextInputEditText
     lateinit var passwordText: TextInputEditText
-    lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +34,7 @@ class LoginActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
         val createAccBtn: Button = findViewById(R.id.login_btn_register)
-        val loginBtn: Button = findViewById(R.id.login_btn)
+        val loginBtn: CircularProgressButton = findViewById(R.id.login_btn)
         val forgotPassBtn: Button = findViewById(R.id.login_btn_forgot)
         val skipBtn: Button = findViewById(R.id.login_btn_skip)
 
@@ -44,7 +44,6 @@ class LoginActivity : AppCompatActivity() {
         emailText = findViewById(R.id.login_email_field_text)
         passwordText = findViewById(R.id.change_password_new_text)
 
-        progressBar = findViewById(R.id.login_progress)
 
         createAccBtn.setOnClickListener {
 
@@ -67,10 +66,9 @@ class LoginActivity : AppCompatActivity() {
             val email = emailText.text.toString()
             val password = passwordText.text.toString()
 
-            if(isEmailCorrect(email,emailField) && isPasswordCorrect(password,passwordField)){
+            loginBtn.startAnimation()
 
-                progressBar.visibility = View.VISIBLE
-                loginBtn.visibility = View.INVISIBLE
+            if(isEmailCorrect(email,emailField) && isPasswordCorrect(password,passwordField)){
 
                 auth.signInWithEmailAndPassword(email,password).addOnCompleteListener {
 
@@ -83,14 +81,15 @@ class LoginActivity : AppCompatActivity() {
 
                         Toast.makeText(applicationContext,"Login error : " + it.exception,
                             Toast.LENGTH_SHORT).show()
+                        loginBtn.revertAnimation()
 
                     }
 
-                    progressBar.visibility = View.INVISIBLE
-                    loginBtn.visibility = View.VISIBLE
 
                 }
 
+            }else {
+                loginBtn.revertAnimation()
             }
 
         }

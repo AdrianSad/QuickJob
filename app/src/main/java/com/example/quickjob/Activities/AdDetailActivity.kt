@@ -59,7 +59,6 @@ class AdDetailActivity : AppCompatActivity() {
         toolbar.title = adTitle
 
         val adDesc: String = intent.extras.getString("desc")
-        Log.d("desc",adDesc)
         desc.text = adDesc
 
         val adCat : String = intent.extras.getString("category")

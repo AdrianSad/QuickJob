@@ -10,6 +10,7 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Toast
+import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
 import com.example.quickjob.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -36,22 +37,21 @@ class RegisterActivity : AppCompatActivity() {
         val registerEmailText: TextInputEditText = findViewById(R.id.login_email_field_text)
         val registerPasswordText: TextInputEditText = findViewById(R.id.change_password_new_text)
 
-        val btn: Button = findViewById(R.id.register_btn)
-        val progressBar: ProgressBar = findViewById(R.id.register_progressBar)
+        val btn: CircularProgressButton = findViewById(R.id.register_btn)
+        val loginBtn : Button = findViewById(R.id.register_registered_btn)
 
         auth = FirebaseAuth.getInstance()
         val firebaseFirestore = FirebaseFirestore.getInstance()
 
         val listener: View.OnClickListener = View.OnClickListener { _ ->
 
+            btn.startAnimation()
+
             val name = registerNameText.text.toString()
             val email = registerEmailText.text.toString()
             val password = registerPasswordText.text.toString()
 
             if(isNameCorrect(name,registerNameField) && isEmailCorrect(email, registerEmailField) && isPasswordCorrect(password,registerPasswordField)){
-
-                btn.visibility = View.INVISIBLE
-                progressBar.visibility = View.VISIBLE
 
                 auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener {
 
@@ -77,6 +77,8 @@ class RegisterActivity : AppCompatActivity() {
                             }else{
 
                                 Toast.makeText(applicationContext,"Register error : " + task.exception,Toast.LENGTH_SHORT).show()
+                                btn.revertAnimation()
+
 
                             }
                         }
@@ -85,17 +87,24 @@ class RegisterActivity : AppCompatActivity() {
                     }else{
 
                         Toast.makeText(applicationContext,"Register error : " + it.exception,Toast.LENGTH_SHORT).show()
+                        btn.revertAnimation()
+
 
                     }
-
-                    btn.visibility = View.VISIBLE
-                    progressBar.visibility = View.INVISIBLE
                 }
 
+            }else{
+                btn.revertAnimation()
             }
         }
 
         btn.setOnClickListener(listener)
+
+        loginBtn.setOnClickListener {
+            val loginIntent: Intent = Intent(applicationContext,LoginActivity::class.java)
+            startActivity(loginIntent)
+            finish()
+        }
 
 }
 

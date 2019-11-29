@@ -9,7 +9,7 @@
         android:background="@drawable/gradient_style">
 
 
-    <Button
+    <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
             android:id="@+id/login_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -18,26 +18,17 @@
             android:layout_marginBottom="16dp"
             android:padding="16dp"
             android:text="Log in"
+            android:background="#ffffff"
             android:textColor="@color/gradient_start_color"
             android:textSize="18sp"
             android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/login_btn_register"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:spinning_bar_color="@color/colorPrimary"
+            app:spinning_bar_padding="6dp"
+            app:spinning_bar_width="4dp"/>
 
-    <ProgressBar
-            android:id="@+id/login_progress"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:indeterminateTint="#ffffff"
-            android:indeterminateTintMode="src_atop"
-            app:layout_constraintBottom_toBottomOf="@+id/login_btn"
-            app:layout_constraintEnd_toEndOf="@+id/login_btn"
-            app:layout_constraintStart_toStartOf="@+id/login_btn"
-            app:layout_constraintTop_toTopOf="@+id/login_btn"
-            tools:visibility="invisible" />
     <ImageView
             android:layout_width="48dp"
             android:layout_height="48dp" app:srcCompat="@drawable/ic_lock_outline_white_24dp"

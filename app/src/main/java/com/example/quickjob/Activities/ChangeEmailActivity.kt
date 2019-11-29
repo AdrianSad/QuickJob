@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
+import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
 import com.example.quickjob.R
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -21,10 +22,11 @@ class ChangeEmailActivity : AppCompatActivity() {
         val emailField = findViewById<TextInputLayout>(R.id.change_email_field)
         val emailText = findViewById<TextInputEditText>(R.id.change_email_text)
 
-        val btn : Button = findViewById(R.id.change_email_btn)
+        val btn : CircularProgressButton = findViewById(R.id.change_email_btn)
 
         btn.setOnClickListener {
 
+            btn.startAnimation()
             if(isEmailCorrect(emailText.text.toString(),emailField)){
 
                 firebaseAuth.currentUser?.updateEmail(emailText.text.toString())
@@ -34,7 +36,7 @@ class ChangeEmailActivity : AppCompatActivity() {
                             finish()
                         }else {
                             Toast.makeText(applicationContext,"Change email error : ${it.exception}", Toast.LENGTH_SHORT).show()
-
+                            btn.revertAnimation()
                         }
                     }
             }

@@ -84,7 +84,6 @@ class AdViewAdapter(private var context: Context, list: ArrayList<Advertisement>
                 e.printStackTrace()
             }
 
-            Log.d("desc", adList[position].desc)
             val detailIntent: Intent = Intent(context,AdDetailActivity::class.java)
             detailIntent.putExtra("title", adList[position].title)
             detailIntent.putExtra("desc",adList[position].desc)

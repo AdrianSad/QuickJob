@@ -15,6 +15,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.firestore.FirebaseFirestore
 
 class MapFragment : Fragment() {
 
@@ -26,16 +27,39 @@ class MapFragment : Fragment() {
     ): View? {
         val root = inflater.inflate(R.layout.fragment_map, container, false)
 
+        val firebaseFirestore: FirebaseFirestore = FirebaseFirestore.getInstance()
+
+        val arr: ArrayList<newMarker> = ArrayList()
+
+        firebaseFirestore.collection("posts").get().addOnSuccessListener {documents ->
+
+            for(document in documents){
+
+                if(document.data["latlng"] != null) {
+                    val hashMap = document.data.getValue("latlng") as HashMap<String, Double>
+                    val loc: LatLng = LatLng(hashMap["latitude"]!!, hashMap["longitude"]!!)
+                    val title: String = document.data.getValue("title").toString()
+                    arr.add(newMarker(loc, title))
+                }
+            }
+
+        }
+
         val mapFragment: SupportMapFragment = childFragmentManager.findFragmentById(R.id.frg) as SupportMapFragment
         mapFragment.getMapAsync {
             it.mapType = GoogleMap.MAP_TYPE_NORMAL
             it.clear()
-            val sydney = LatLng(-34.0, 151.0)
-            it.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-            it.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+
+            for(marker in arr){
+                it.addMarker(MarkerOptions().position(marker.loc).title(marker.title))
+            }
         }
 
         return root
+    }
+
+    private class newMarker(var loc: LatLng, var title: String){
+
     }
 
 

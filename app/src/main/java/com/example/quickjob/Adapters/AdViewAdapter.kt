@@ -13,6 +13,7 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat.startActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -47,15 +48,14 @@ class AdViewAdapter(private var context: Context, list: ArrayList<Advertisement>
             .centerCrop()
             .placeholder(R.drawable.loading_shape)
             .error(R.drawable.loading_shape)
+
+        setHasStableIds(true)
     }
 
     override fun onBindViewHolder(viewHolder: MyViewHolder, position: Int) {
 
         viewHolder.image.animation = AnimationUtils.loadAnimation(context,R.anim.fade_transtition_animation)
-        viewHolder.container1.animation = AnimationUtils.loadAnimation(context,R.anim.fade_scale_animation)
-        viewHolder.container2.animation = AnimationUtils.loadAnimation(context,R.anim.fade_scale_animation)
         viewHolder.title.text = adList[position].title
-        viewHolder.category.text = adList[position].category
         viewHolder.payment.text = adList[position].payment
 
         Glide.with(context).load(adList[position].img).apply(options).into(viewHolder.image)
@@ -100,7 +100,13 @@ class AdViewAdapter(private var context: Context, list: ArrayList<Advertisement>
 
     }
 
+    override fun getItemId(position: Int): Long {
+        return super.getItemId(position)
+    }
 
+    override fun getItemViewType(position: Int): Int {
+        return super.getItemViewType(position)
+    }
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): MyViewHolder {
 
@@ -122,14 +128,11 @@ class AdViewAdapter(private var context: Context, list: ArrayList<Advertisement>
 
 
         var title: TextView = itemView.findViewById(R.id.ad_item_title)
-        var category: TextView = itemView.findViewById(R.id.ad_item_category)
         var date: TextView = itemView.findViewById(R.id.ad_item_date)
         var distance: TextView = itemView.findViewById(R.id.ad_item_distance)
         var payment: TextView = itemView.findViewById(R.id.ad_item_payment)
         var image: ImageView = itemView.findViewById(R.id.ad_item_thumbnail)
-        var container1: LinearLayout = itemView.findViewById(R.id.item_linearlayout1)
-        var container2: LinearLayout = itemView.findViewById(R.id.item_linearlayout2)
-        val mainContainer: LinearLayout = itemView.findViewById(R.id.item_container)
+        val mainContainer: ConstraintLayout = itemView.findViewById(R.id.item_container)
 
         override fun onClick(p0: View?) {
 

@@ -8,23 +8,21 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.location.Address
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
 import android.util.Log
 import android.view.View
 import android.widget.*
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
 import com.example.quickjob.R
 import com.google.android.gms.common.api.Status
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
-import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.net.PlacesClient
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -33,16 +31,23 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
+import com.schibstedspain.leku.*
+import com.schibstedspain.leku.locale.SearchZoneRect
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import org.w3c.dom.Text
 import java.lang.Exception
 import java.util.*
+import kotlin.collections.HashMap
 
 class NewAdActivity : AppCompatActivity() {
 
     lateinit var img: ImageView
     lateinit var imgUri: Uri
+    private val MAP_BUTTON_REQUEST_CODE = 3
+    private var latitude: Double = 0.0
+    private var longitude: Double = 0.0
+    lateinit var locationText : TextInputEditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +56,7 @@ class NewAdActivity : AppCompatActivity() {
         showSnackBar(this,"Remember to fill all fields :)")
 
         img = findViewById(R.id.new_ad_img)
+        val locationImg : ImageView = findViewById(R.id.new_ad_location_img)
 
         val titleField: TextInputLayout = findViewById(R.id.new_ad_title_field)
         val locationField: TextInputLayout = findViewById(R.id.new_ad_location_field)
@@ -58,7 +64,7 @@ class NewAdActivity : AppCompatActivity() {
         val descField: TextInputLayout = findViewById(R.id.new_ad_desc_field)
 
         val titleText: TextInputEditText = findViewById(R.id.new_ad_title_text)
-        val locationText : TextInputEditText = findViewById(R.id.new_ad_location_text)
+         locationText = findViewById(R.id.new_ad_location_text)
         val paymentText: TextInputEditText = findViewById(R.id.new_ad_payment_text)
         val descText: TextInputEditText = findViewById(R.id.new_ad_desc_text)
 
@@ -129,6 +135,11 @@ class NewAdActivity : AppCompatActivity() {
                                 "user" to currentUser!!.uid
                             )
 
+                            if(longitude != 0.0 && latitude != 0.0){
+                                val location: LatLng = LatLng(latitude,longitude)
+                                adData.put("latlng",location)
+                            }
+
                             firebaseFirestore.collection("posts").add(adData).addOnSuccessListener { document ->
 
                                 adData.put("id", document.id)
@@ -136,6 +147,7 @@ class NewAdActivity : AppCompatActivity() {
                                     firebaseFirestore.collection("users").document(currentUser.uid).collection("posts").add(adData).addOnCompleteListener { task ->
                                         if(task.isSuccessful)
                                             //doneBtn.doneLoadingAnimation(Color.parseColor("#8BC34A"),BitmapFactory.decodeResource(applicationContext.resources,R.drawable.ic_done_white_24dp))
+                                            startDetailActivity(adData)
                                             finish()
                                     }
                                 }.addOnFailureListener{ exception ->
@@ -160,6 +172,29 @@ class NewAdActivity : AppCompatActivity() {
 
         }
 
+        locationImg.setOnClickListener {
+
+            val locationPickerIntent = LocationPickerActivity.Builder()
+                .withLocation(52.2297259,21.0116312)
+                .withGeolocApiKey(R.string.google_maps_key.toString())
+                //.withSearchZone("es_ES")
+                //.withSearchZone(SearchZoneRect(LatLng(26.525467, -18.910366), LatLng(43.906271, 5.394197)))
+                .withDefaultLocaleSearchZone()
+                //.shouldReturnOkOnBackPressed()
+                //.withStreetHidden()
+                //.withCityHidden()
+                //.withZipCodeHidden()
+                //.withSatelliteViewHidden()
+                //.withGooglePlacesEnabled()
+                .withGoogleTimeZoneEnabled()
+                //.withVoiceSearchHidden()
+                .withUnnamedRoadHidden()
+                .build(applicationContext)
+
+            startActivityForResult(locationPickerIntent,MAP_BUTTON_REQUEST_CODE)
+
+        }
+
     }
 
    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -174,7 +209,42 @@ class NewAdActivity : AppCompatActivity() {
                 val error: Exception = result.error
                 Toast.makeText(applicationContext,"Crop image error : $error",Toast.LENGTH_SHORT).show()
             }
+        }else
+            if (resultCode == Activity.RESULT_OK && data != null) {
+                Log.d("RESULT****", "OK")
+                if (requestCode == MAP_BUTTON_REQUEST_CODE) {
+                    latitude = data.getDoubleExtra(LATITUDE, 0.0)
+                    longitude = data.getDoubleExtra(LONGITUDE, 0.0)
+                    val address = data.getStringExtra(LOCATION_ADDRESS)
+                    locationText.setText(address)
+
+                }
+            }else
+       if (resultCode == Activity.RESULT_CANCELED) {
+           Log.d("RESULT****", "CANCELLED")
+       }
+    }
+
+    private fun startDetailActivity(adData : HashMap<String, Any>){
+
+        var miliseconds: Long = 0
+        try {
+            miliseconds = adData["time"] as Long
+        }catch (e: Exception){
+            e.printStackTrace()
         }
+
+        val detailIntent: Intent = Intent(applicationContext,AdDetailActivity::class.java)
+        detailIntent.putExtra("title", adData["title"].toString())
+        detailIntent.putExtra("desc",adData["desc"].toString())
+        detailIntent.putExtra("timestamp",miliseconds)
+        detailIntent.putExtra("category",adData["cat"].toString())
+        detailIntent.putExtra("payment",adData["payment"].toString())
+        detailIntent.putExtra("img",adData["img"].toString())
+        detailIntent.putExtra("user",adData["user"].toString())
+        detailIntent.putExtra("location",adData["location"].toString())
+
+        startActivity(detailIntent)
     }
 
     private fun isFieldCorrect(text: String, field: TextInputLayout): Boolean {

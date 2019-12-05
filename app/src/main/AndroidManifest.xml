@@ -10,8 +10,12 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-feature android:name="android.hardware.location.network" android:required="false" />
+    <uses-feature android:name="android.hardware.location.gps" android:required="false"  />
 
     <application
             android:allowBackup="true"
@@ -44,6 +48,22 @@
         </activity>
         <activity android:name=".Activities.LoginActivity" />
         <activity android:name=".Activities.RegisterActivity" />
+
+        <activity
+                android:name="com.schibstedspain.leku.LocationPickerActivity"
+                android:label="@string/leku_title_activity_location_picker"
+                android:theme="@style/AppTheme"
+                android:windowSoftInputMode="adjustPan"
+                android:parentActivityName=".Activities.HomeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                    android:resource="@xml/leku_searchable" />
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".Activities.HomeActivity" />
+        </activity>
 
         <uses-library
                 android:name="org.apache.http.legacy"

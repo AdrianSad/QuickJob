@@ -48,58 +48,20 @@
 
     <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:isScrollContainer="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
-<ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <androidx.constraintlayout.widget.ConstraintLayout
+
+        <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-            <View
-                    android:id="@+id/view"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="#2e2e2e"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/new_ad_spinner" />
-
-            <View
-                    android:id="@+id/view2"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="#2e2e2e"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/new_ad_location_field" />
-
-            <View
-                    android:id="@+id/view3"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="#2e2e2e"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/new_ad_payment_field" />
 
             <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/new_ad_title_field"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="40dp"
                     app:errorEnabled="true"
                     app:hintAnimationEnabled="true"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -114,15 +76,55 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <View
+                    android:id="@+id/view"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@color/colorPrimary"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/new_ad_spinner" />
+
             <Spinner
                     android:id="@+id/new_ad_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
                     android:entries="@array/categories"
+                    android:background="#A7D6FF"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/new_ad_title_field" />
+
+            <View
+                    android:id="@+id/view2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@color/colorPrimary"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/new_ad_location_field" />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Click the icon to run place picker. Otherwise your marker will not show on map."
+                    android:layout_marginTop="40dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"/>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
             <ImageView
                     android:id="@+id/new_ad_location_img"
@@ -135,7 +137,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/new_ad_location_field"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
                     app:errorEnabled="true"
@@ -153,13 +155,26 @@
                         android:hint="Location"
                         android:singleLine="true" />
             </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <View
+                    android:id="@+id/view3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@color/colorPrimary"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/new_ad_payment_field" />
 
             <TextView
                     android:id="@+id/textView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="40dp"
                     android:text="Payment method:"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -199,6 +214,12 @@
 
             </RadioGroup>
 
+            <LinearLayout
+            android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+        android:orientation="horizontal"
+                    android:layout_marginTop="16dp">
+
             <ImageView
                     android:id="@+id/new_ad_img_payment"
                     android:layout_width="48dp"
@@ -210,7 +231,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/new_ad_payment_field"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     app:errorEnabled="true"
@@ -226,11 +247,22 @@
                         android:hint="Payment for work" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            </LinearLayout>
+
+            <View
+                    android:id="@+id/view5"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@color/colorPrimary" />
+
             <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/new_ad_desc_field"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="40dp"
                     app:counterEnabled="true"
                     app:errorEnabled="true"
                     app:hintAnimationEnabled="true"
@@ -245,28 +277,32 @@
                         android:hint="Write interesting description" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <View
+                    android:id="@+id/view6"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@color/colorPrimary" />
+
             <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
                     android:id="@+id/new_ad_btn_add"
                     android:layout_width="196dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginBottom="32dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginBottom="40dp"
                     android:background="@drawable/btn_style"
                     android:padding="16dp"
                     android:text="Done"
                     android:textColor="#ffffff"
                     app:initialCornerAngle="32dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/new_ad_desc_field"
                     app:spinning_bar_color="#ffffff"
                     app:spinning_bar_padding="6dp"
                     app:spinning_bar_width="4dp" />
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+        </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

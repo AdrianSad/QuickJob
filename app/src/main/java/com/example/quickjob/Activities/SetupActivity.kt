@@ -6,10 +6,9 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
+import android.view.WindowManager
+import android.widget.*
+import androidx.appcompat.widget.Toolbar
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -34,7 +33,11 @@ class SetupActivity : AppCompatActivity() {
     lateinit var firebaseFirestore: FirebaseFirestore
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_setup)
+
 
 
         img = findViewById(R.id.setup_change_img)
@@ -49,6 +52,12 @@ class SetupActivity : AppCompatActivity() {
             firebaseFirestore = FirebaseFirestore.getInstance()
         val currentUser = firebaseAuth.currentUser
         //TODO: reset pass btn
+        findViewById<Toolbar>(R.id.setup_toolbar).let {
+            setSupportActionBar(it)
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            supportActionBar?.setDisplayShowHomeEnabled(true)
+        }
+
 
         val user = currentUser
 
@@ -208,5 +217,10 @@ class SetupActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext,"Crop image error : $error", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 }

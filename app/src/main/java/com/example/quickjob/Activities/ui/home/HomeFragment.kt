@@ -41,6 +41,7 @@ class HomeFragment : Fragment() {
 
         viewManager = LinearLayoutManager(root.context)
         viewAdapter = AdViewAdapter(root.context,arr)
+        viewAdapter.setHasStableIds(true)
 
         recyclerView = root.findViewById<RecyclerView>(R.id.home_recyclerView).apply {
             setHasFixedSize(true)
@@ -48,7 +49,8 @@ class HomeFragment : Fragment() {
             adapter = viewAdapter
         }
 
-        firebaseFirestore.collection("posts").get().addOnSuccessListener { documents ->
+
+       /* firebaseFirestore.collection("posts").get().addOnSuccessListener { documents ->
 
             for(document in documents){
 
@@ -58,7 +60,7 @@ class HomeFragment : Fragment() {
             }
         }.addOnFailureListener {
             Toast.makeText(root.context,"Retrieve post error : $it", Toast.LENGTH_LONG).show()
-        }
+        }*/
 
         return root
     }
@@ -71,13 +73,13 @@ class HomeFragment : Fragment() {
             if(exception != null){
                 return@addSnapshotListener
             }
-
+            arr.clear()
             for(dc in snapshots!!.documentChanges){
-                if(dc.type == DocumentChange.Type.ADDED){
+
                     val newItem = dc.document.toObject(Advertisement::class.java)
                     arr.add(newItem)
                     viewAdapter.notifyDataSetChanged()
-                }
+
             }
         }
     }

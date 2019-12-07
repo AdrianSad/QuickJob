@@ -1,11 +1,13 @@
 package com.example.quickjob.Activities
 
+import android.app.Activity
 import android.app.ActivityOptions
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.transition.Explode
-import android.view.Gravity
+import android.view.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import androidx.navigation.findNavController
@@ -14,9 +16,6 @@ import com.google.android.material.navigation.NavigationView
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -27,16 +26,20 @@ import com.google.firebase.auth.FirebaseAuth
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_setup.*
 
-class HomeActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelectedListener {
+class HomeActivity : AppCompatActivity(){
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var mAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_home)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+
 
 // Check if we're running on Android 5.0 or higher
     /*    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -46,22 +49,28 @@ class HomeActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         } else {
             // Swap without transition
         }*/
+        mAuth = FirebaseAuth.getInstance()
+        val currentuser = mAuth.currentUser
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener {
-            val newAdIntent = Intent(applicationContext,NewAdActivity::class.java)
-            startActivity(newAdIntent,ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+            if(currentuser != null) {
+                val newAdIntent = Intent(applicationContext, NewAdActivity::class.java)
+                startActivity(
+                    newAdIntent,
+                    ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+                )
+            }else {
+                showSnackBar(this,"You have to be logged in")
+            }
         }
 
-        mAuth = FirebaseAuth.getInstance()
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
 
         refreshNavHeader(navView)
-
-        navView.setNavigationItemSelectedListener(this)
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -75,6 +84,15 @@ class HomeActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+
+        if(currentuser == null) {
+            val loginItem: MenuItem = navView.menu.findItem(R.id.nav_logout)
+            loginItem.setTitle("Sign in")
+
+            val profileItem: MenuItem = navView.menu.findItem(R.id.nav_setup)
+            profileItem.isVisible = false
+
+        }
     }
 
     private fun refreshNavHeader(navView: NavigationView) {
@@ -109,19 +127,27 @@ class HomeActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+    /*override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.home, menu)
         return true
-    }
+    }*/
 
+    fun signOut(item: MenuItem){
+        if(mAuth.currentUser != null){
+            mAuth.signOut()
+        }
+            val newAdIntent = Intent(applicationContext,LoginActivity::class.java)
+            startActivity(newAdIntent)
+
+    }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    override fun onNavigationItemSelected(p0: MenuItem): Boolean {
+    /*override fun onNavigationItemSelected(p0: MenuItem): Boolean {
 
         if(p0.itemId == R.id.nav_logout){
 
@@ -130,8 +156,7 @@ class HomeActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
                 Toast.makeText(applicationContext,"Log out",Toast.LENGTH_LONG).show()
             }
             else{
-                Toast.makeText(applicationContext,"First Log In",Toast.LENGTH_LONG).show()
-                val newAdIntent = Intent(applicationContext,NewAdActivity::class.java)
+                val newAdIntent = Intent(applicationContext,LoginActivity::class.java)
                 startActivity(newAdIntent)
             }
 
@@ -140,7 +165,7 @@ class HomeActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
-    }
+    }*/
 
     override fun onResumeFragments() {
         super.onResumeFragments()
@@ -148,6 +173,16 @@ class HomeActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         refreshNavHeader(navView)
     }
 
+    private fun showSnackBar(activity: Activity, message: String, action: String? = null,
+                             actionListener: View.OnClickListener? = null, duration: Int = Snackbar.LENGTH_SHORT) {
+        val snackBar = Snackbar.make(activity.findViewById(android.R.id.content), message, duration)
+        snackBar.view.setBackgroundColor(Color.parseColor("#CC000000")) // todo update your color
+        snackBar.setActionTextColor(Color.WHITE)
+        if (action != null && actionListener!=null) {
+            snackBar.setAction(action, actionListener)
+        }
+        snackBar.show()
+    }
 /*override fun onStart() {
     super.onStart()
 

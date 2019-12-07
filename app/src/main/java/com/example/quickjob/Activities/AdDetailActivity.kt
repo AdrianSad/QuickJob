@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -35,6 +36,9 @@ class AdDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_ad_detail)
 
         val toolbarImg : ImageView = findViewById(R.id.ad_detail_img)
@@ -51,6 +55,8 @@ class AdDetailActivity : AppCompatActivity() {
         val firebaseFirestore = FirebaseFirestore.getInstance()
 
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
 
         val adImg: String = intent.extras.getString("img")
         Glide.with(this).load(adImg).into(toolbarImg)
@@ -71,7 +77,7 @@ class AdDetailActivity : AppCompatActivity() {
         location.text = adLocation
 
 
-        val adDate:String = SimpleDateFormat().format(Date(intent.extras.getLong("timestamp")))
+        val adDate:String = intent.extras.getString("timestamp")
         date.text = adDate
 
 
@@ -93,5 +99,9 @@ class AdDetailActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 }

@@ -6,6 +6,18 @@
         android:layout_height="match_parent"
         tools:context=".Activities.SetupActivity">
 
+    <androidx.appcompat.widget.Toolbar
+            android:id="@+id/setup_toolbar"
+            android:layout_width="0dp"
+            app:title="Profile Settings"
+            android:background="@color/colorPrimary"
+            app:titleTextColor="@color/leku_white"
+            android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     <Button
             android:id="@+id/setup_change_email_btn"
             android:layout_width="wrap_content"
@@ -40,7 +52,7 @@
             android:src="@drawable/default_avatar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/setup_toolbar" />
 
     <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/setup_change_name_field"

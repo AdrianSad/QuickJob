@@ -38,7 +38,7 @@ class IntroActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        val mainActivity: Intent = Intent(applicationContext,MainActivity::class.java)
+        val mainActivity: Intent = Intent(applicationContext,HomeActivity::class.java)
 
         /*if(restorePrefData()){
 

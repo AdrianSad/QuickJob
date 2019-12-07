@@ -49,12 +49,12 @@ class AdViewAdapter(private var context: Context, list: ArrayList<Advertisement>
             .placeholder(R.drawable.loading_shape)
             .error(R.drawable.loading_shape)
 
-        setHasStableIds(true)
     }
 
     override fun onBindViewHolder(viewHolder: MyViewHolder, position: Int) {
 
         viewHolder.image.animation = AnimationUtils.loadAnimation(context,R.anim.fade_transtition_animation)
+        viewHolder.animContainer.animation = AnimationUtils.loadAnimation(context,R.anim.fade_scale_animation)
         viewHolder.title.text = adList[position].title
         viewHolder.payment.text = adList[position].payment
 
@@ -83,11 +83,12 @@ class AdViewAdapter(private var context: Context, list: ArrayList<Advertisement>
             }catch (e: Exception){
                 e.printStackTrace()
             }
+            val adDate:String = SimpleDateFormat().format(Date(miliseconds))
 
             val detailIntent: Intent = Intent(context,AdDetailActivity::class.java)
             detailIntent.putExtra("title", adList[position].title)
             detailIntent.putExtra("desc",adList[position].desc)
-            detailIntent.putExtra("timestamp",miliseconds)
+            detailIntent.putExtra("timestamp",adDate)
             detailIntent.putExtra("category",adList[position].category)
             detailIntent.putExtra("payment",adList[position].payment)
             detailIntent.putExtra("img",adList[position].img)
@@ -100,12 +101,16 @@ class AdViewAdapter(private var context: Context, list: ArrayList<Advertisement>
 
     }
 
-    override fun getItemId(position: Int): Long {
-        return super.getItemId(position)
+    public override fun getItemId(position: Int): Long {
+        return position.toLong()
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return super.getItemViewType(position)
+    public override fun getItemViewType(position: Int): Int {
+        return position
+    }
+
+    public override fun setHasStableIds(hasStableIds: Boolean) {
+        super.setHasStableIds(hasStableIds)
     }
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): MyViewHolder {
@@ -133,6 +138,7 @@ class AdViewAdapter(private var context: Context, list: ArrayList<Advertisement>
         var payment: TextView = itemView.findViewById(R.id.ad_item_payment)
         var image: ImageView = itemView.findViewById(R.id.ad_item_thumbnail)
         val mainContainer: ConstraintLayout = itemView.findViewById(R.id.item_container)
+        val animContainer : ConstraintLayout = itemView.findViewById(R.id.item_container2)
 
         override fun onClick(p0: View?) {
 

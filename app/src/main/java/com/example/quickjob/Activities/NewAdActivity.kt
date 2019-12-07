@@ -14,9 +14,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
+import android.text.InputType
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import android.widget.*
+import androidx.appcompat.widget.Toolbar
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
 import com.example.quickjob.R
 import com.google.android.gms.common.api.Status
@@ -37,6 +40,7 @@ import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import org.w3c.dom.Text
 import java.lang.Exception
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -51,6 +55,9 @@ class NewAdActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_new_ad)
 
         showSnackBar(this,"Remember to fill all fields :)")
@@ -70,12 +77,17 @@ class NewAdActivity : AppCompatActivity() {
 
         val category: Spinner = findViewById(R.id.new_ad_spinner)
         val doneBtn: CircularProgressButton = findViewById(R.id.new_ad_btn_add)
+        val toolbar: Toolbar = findViewById(R.id.new_ad_toolbar)
 
         val firebaseStorage = FirebaseStorage.getInstance()
         val firebaseFirestore: FirebaseFirestore = FirebaseFirestore.getInstance()
         val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
         val currentUser = firebaseAuth.currentUser
 
+
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
 
         img.setOnClickListener{
 
@@ -175,7 +187,6 @@ class NewAdActivity : AppCompatActivity() {
         locationImg.setOnClickListener {
 
             val locationPickerIntent = LocationPickerActivity.Builder()
-                .withLocation(52.2297259,21.0116312)
                 .withGeolocApiKey(R.string.google_maps_key.toString())
                 //.withSearchZone("es_ES")
                 //.withSearchZone(SearchZoneRect(LatLng(26.525467, -18.910366), LatLng(43.906271, 5.394197)))
@@ -215,8 +226,15 @@ class NewAdActivity : AppCompatActivity() {
                 if (requestCode == MAP_BUTTON_REQUEST_CODE) {
                     latitude = data.getDoubleExtra(LATITUDE, 0.0)
                     longitude = data.getDoubleExtra(LONGITUDE, 0.0)
-                    val address = data.getStringExtra(LOCATION_ADDRESS)
-                    locationText.setText(address)
+                    data.getStringExtra(LOCATION_ADDRESS).let {
+
+                        val s: String = it.substring(it.indexOf(",")+1)
+                        val temp: String = s.substring(s.indexOf(",")+1)
+                        temp.trim()
+
+                        locationText.setText(temp)
+                    }
+
 
                 }
             }else
@@ -227,18 +245,19 @@ class NewAdActivity : AppCompatActivity() {
 
     private fun startDetailActivity(adData : HashMap<String, Any>){
 
-        var miliseconds: Long = 0
+       /* var miliseconds: Long = 0
         try {
             miliseconds = adData["time"] as Long
         }catch (e: Exception){
             e.printStackTrace()
         }
+        val adDate:String = SimpleDateFormat().format(Date(miliseconds))*/
 
         val detailIntent: Intent = Intent(applicationContext,AdDetailActivity::class.java)
         detailIntent.putExtra("title", adData["title"].toString())
         detailIntent.putExtra("desc",adData["desc"].toString())
-        detailIntent.putExtra("timestamp",miliseconds)
-        detailIntent.putExtra("category",adData["cat"].toString())
+        detailIntent.putExtra("timestamp","Just added")
+        detailIntent.putExtra("category",adData["category"].toString())
         detailIntent.putExtra("payment",adData["payment"].toString())
         detailIntent.putExtra("img",adData["img"].toString())
         detailIntent.putExtra("user",adData["user"].toString())
@@ -289,11 +308,13 @@ class NewAdActivity : AppCompatActivity() {
             // Is the button now checked?
             val checked = view.isChecked
             val fieldText = findViewById<TextInputLayout>(R.id.new_ad_payment_field)
+            val fieldEdit = findViewById<TextInputEditText>(R.id.new_ad_payment_text)
             // Check which radio button was clicked
             when (view.getId()) {
                 R.id.new_ad_btn_money ->
                     if (checked) {
-                        fieldText.hint = "Write how much money are you able to spend"
+                        fieldText.hint = "Write how much money you are able to spend"
+                        fieldEdit.inputType = InputType.TYPE_CLASS_NUMBER
                         findViewById<ImageView>(R.id.new_ad_img_payment).setImageResource(R.drawable.ic_attach_money_black_24dp)
                     }
                 R.id.new_ad_btn_sthelse ->
@@ -303,5 +324,10 @@ class NewAdActivity : AppCompatActivity() {
                     }
             }
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 }

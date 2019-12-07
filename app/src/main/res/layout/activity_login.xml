@@ -35,26 +35,32 @@
             android:id="@+id/login_lock_img2"
             android:layout_marginTop="32dp" app:layout_constraintTop_toBottomOf="@+id/login_img_email"
             app:layout_constraintStart_toStartOf="parent"/>
+
     <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="360dp"
+            android:id="@+id/change_password_new_field"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:hintAnimationEnabled="true"
+            android:layout_marginTop="8dp"
             android:hint="Insert your account's password"
             android:textColorHint="@color/white_transparent"
-            android:id="@+id/change_password_new_field"
-            app:errorEnabled="true" app:passwordToggleEnabled="true" app:passwordToggleTint="@color/white_transparent"
-            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/login_email_field"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toEndOf="@+id/login_lock_img2"
-    >
+            app:errorEnabled="true"
+            app:hintAnimationEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/login_lock_img2"
+            app:layout_constraintTop_toBottomOf="@+id/login_email_field"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/white_transparent">
 
         <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/change_password_new_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:textColorHint="@color/white_transparent"
                 android:backgroundTint="@color/white_transparent"
-                android:id="@+id/change_password_new_text" android:inputType="textPassword"
-                android:imeOptions="actionDone" android:singleLine="true"/>
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:singleLine="true"
+                android:textColor="@android:color/white"
+                android:textColorHint="@color/white_transparent" />
     </com.google.android.material.textfield.TextInputLayout>
     <ImageView
             android:layout_width="48dp"
@@ -63,25 +69,30 @@
             android:layout_weight="1"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="72dp"
             app:layout_constraintTop_toBottomOf="@+id/textView5"/>
+
     <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="360dp"
+            android:id="@+id/login_email_field"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:hintAnimationEnabled="true"
+            android:layout_marginTop="64dp"
             android:hint="Sign in with your email"
             android:textColorHint="@color/white_transparent"
-            android:id="@+id/login_email_field"
-            app:errorEnabled="true" app:layout_constraintTop_toBottomOf="@+id/textView5"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toEndOf="@+id/login_img_email"
-            android:layout_marginTop="64dp">
+            app:errorEnabled="true"
+            app:hintAnimationEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/login_img_email"
+            app:layout_constraintTop_toBottomOf="@+id/textView5">
 
         <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/login_email_field_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:textColorHint="@color/white_transparent"
                 android:backgroundTint="@color/white_transparent"
-                android:id="@+id/login_email_field_text" android:imeOptions="actionDone|actionGo|actionNext"
-                android:singleLine="true" android:inputType="textEmailAddress"/>
+                android:imeOptions="actionDone|actionGo|actionNext"
+                android:inputType="textEmailAddress"
+                android:singleLine="true"
+                android:textColor="@android:color/white"
+                android:textColorHint="@color/white_transparent" />
     </com.google.android.material.textfield.TextInputLayout>
     <TextView
             android:text="Quick Job"

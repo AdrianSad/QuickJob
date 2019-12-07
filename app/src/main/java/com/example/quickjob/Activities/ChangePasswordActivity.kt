@@ -2,8 +2,10 @@ package com.example.quickjob.Activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
 import com.example.quickjob.R
 import com.google.android.material.textfield.TextInputEditText
@@ -14,6 +16,9 @@ class ChangePasswordActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_change_password)
 
         val firebaseAuth = FirebaseAuth.getInstance()
@@ -26,6 +31,12 @@ class ChangePasswordActivity : AppCompatActivity() {
         val confText = findViewById<TextInputEditText>(R.id.change_password_conf_text)
 
         val btn : CircularProgressButton = findViewById(R.id.change_pass_btn)
+
+        findViewById<Toolbar>(R.id.change_password_toolbar).let {
+            setSupportActionBar(it)
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            supportActionBar?.setDisplayShowHomeEnabled(true)
+        }
 
         btn.setOnClickListener {
             btn.startAnimation()
@@ -71,6 +82,11 @@ class ChangePasswordActivity : AppCompatActivity() {
             }
             else -> registerPasswordField.error = null
         }
+        return true
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
         return true
     }
 }

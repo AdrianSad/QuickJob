@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.transition.Explode
 import android.view.*
+import android.view.inputmethod.EditorInfo
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import androidx.navigation.findNavController
@@ -17,14 +18,20 @@ import androidx.core.view.GravityCompat
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.widget.ImageView
+import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import com.bumptech.glide.Glide
+import com.example.quickjob.Activities.ui.home.HomeFragment
 import com.example.quickjob.R
 import com.google.firebase.auth.FirebaseAuth
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_setup.*
+import java.util.*
 
 class HomeActivity : AppCompatActivity(){
 
@@ -39,7 +46,6 @@ class HomeActivity : AppCompatActivity(){
         setContentView(R.layout.activity_home)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-
 
 // Check if we're running on Android 5.0 or higher
     /*    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -81,6 +87,7 @@ class HomeActivity : AppCompatActivity(){
                 R.id.nav_tools, R.id.nav_share, R.id.nav_setup, R.id.nav_logout
             ), drawerLayout
         )
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
@@ -126,12 +133,6 @@ class HomeActivity : AppCompatActivity(){
 
         }
     }
-
-    /*override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.home, menu)
-        return true
-    }*/
 
     fun signOut(item: MenuItem){
         if(mAuth.currentUser != null){

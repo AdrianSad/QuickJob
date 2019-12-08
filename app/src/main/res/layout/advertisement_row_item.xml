@@ -5,6 +5,7 @@
         android:id="@+id/item_container"
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:layout_margin="8dp"
         android:layout_marginTop="5dp"
         android:background="#fff"
         android:orientation="horizontal"
@@ -36,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="Ad title"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/ad_item_thumbnail"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -57,12 +58,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:drawableLeft="@drawable/ic_location_on_black_24dp"
                 android:text="Distance"
                 android:textSize="14sp"
-                app:layout_constraintStart_toEndOf="@+id/ad_item_thumbnail"
-                app:layout_constraintTop_toBottomOf="@+id/ad_item_title" />
+                app:layout_constraintBottom_toTopOf="@+id/ad_item_payment"
+                app:layout_constraintStart_toEndOf="@+id/ad_item_thumbnail" />
 
         <TextView
                 android:id="@+id/ad_item_payment"
@@ -74,7 +74,6 @@
                 android:textColor="#4CAF50"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/ad_item_thumbnail"
-                app:layout_constraintTop_toBottomOf="@+id/ad_item_distance" />
+                app:layout_constraintStart_toEndOf="@+id/ad_item_thumbnail" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

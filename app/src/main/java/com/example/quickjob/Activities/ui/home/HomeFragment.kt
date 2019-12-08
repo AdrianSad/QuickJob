@@ -1,9 +1,10 @@
 package com.example.quickjob.Activities.ui.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
+import android.view.inputmethod.EditorInfo
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,9 +20,10 @@ class HomeFragment : Fragment() {
 
    // private lateinit var homeViewModel: HomeViewModel
     private lateinit var recyclerView: RecyclerView
-    private lateinit var viewAdapter: RecyclerView.Adapter<*>
+    private lateinit var viewAdapter: AdViewAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
-    private  var arr = arrayListOf<Advertisement>()
+    private  var arr = ArrayList<Advertisement>()
+    private  var temp = ArrayList<Advertisement>()
     private lateinit var firebaseFirestore: FirebaseFirestore
 
     override fun onCreateView(
@@ -29,13 +31,8 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-       /* homeViewModel =
-            ViewModelProviders.of(this).get(HomeViewModel::class.java)*/
+
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-        //val textView: TextView = root.findViewById(R.id.text_home)
-       /* homeViewModel.text.observe(this, Observer {
-            textView.text = it
-        })*/
 
         firebaseFirestore = FirebaseFirestore.getInstance()
 
@@ -49,18 +46,7 @@ class HomeFragment : Fragment() {
             adapter = viewAdapter
         }
 
-
-       /* firebaseFirestore.collection("posts").get().addOnSuccessListener { documents ->
-
-            for(document in documents){
-
-                val item = document.toObject(Advertisement::class.java)
-                arr.add(item)
-                viewAdapter.notifyDataSetChanged()
-            }
-        }.addOnFailureListener {
-            Toast.makeText(root.context,"Retrieve post error : $it", Toast.LENGTH_LONG).show()
-        }*/
+        setSearchArr()
 
         return root
     }
@@ -73,15 +59,59 @@ class HomeFragment : Fragment() {
             if(exception != null){
                 return@addSnapshotListener
             }
-            arr.clear()
             for(dc in snapshots!!.documentChanges){
-
+                if (dc.type == DocumentChange.Type.ADDED) {
                     val newItem = dc.document.toObject(Advertisement::class.java)
-                    arr.add(newItem)
-                    viewAdapter.notifyDataSetChanged()
+                        arr.add(newItem)
+                        viewAdapter.notifyDataSetChanged()
 
+                }
             }
         }
+
+
+    }
+
+    fun setSearchArr(){
+
+        firebaseFirestore.collection("posts").get().addOnCompleteListener { task ->
+
+            if(task.isSuccessful){
+                for(document in task.result?.documents!!) {
+                    val item = document.toObject(Advertisement::class.java)
+                    if (item != null) {
+                        temp.add(item)
+                    }
+                }
+                viewAdapter.setSearchList(temp)
+            }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.search_menu, menu)
+        val searchItem = menu.findItem(R.id.menu_search)
+        val searchView = searchItem.actionView as androidx.appcompat.widget.SearchView
+        searchView.imeOptions = EditorInfo.IME_ACTION_DONE
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+
+                viewAdapter.filter.filter(newText)
+                return true
+            }
+
+        })
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
 

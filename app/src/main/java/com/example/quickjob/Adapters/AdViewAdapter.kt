@@ -2,45 +2,30 @@ package com.example.quickjob.Adapters
 
 import android.content.Context
 import android.content.Intent
-import android.icu.text.DateFormat
-import android.location.Location
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat.startActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.quickjob.Activities.AdDetailActivity
 import com.example.quickjob.Classes.Advertisement
 import com.example.quickjob.R
-import com.google.android.gms.common.api.GoogleApi
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.GoogleMapOptions
-import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.SphericalUtil
-import org.w3c.dom.Text
 import java.lang.Exception
-import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
 class AdViewAdapter(private var context: Context, list: ArrayList<Advertisement>) :
-    RecyclerView.Adapter<AdViewAdapter.MyViewHolder>() {
+    RecyclerView.Adapter<AdViewAdapter.MyViewHolder>(), Filterable{
 
     private var adList: ArrayList<Advertisement> = list
+    private var searchList: List<Advertisement>
     private var options : RequestOptions
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
 
     init {
@@ -48,7 +33,11 @@ class AdViewAdapter(private var context: Context, list: ArrayList<Advertisement>
             .centerCrop()
             .placeholder(R.drawable.loading_shape)
             .error(R.drawable.loading_shape)
+        searchList = ArrayList(list)
+    }
 
+    fun setSearchList(arr: ArrayList<Advertisement>){
+        searchList = ArrayList(arr)
     }
 
     override fun onBindViewHolder(viewHolder: MyViewHolder, position: Int) {
@@ -67,28 +56,15 @@ class AdViewAdapter(private var context: Context, list: ArrayList<Advertisement>
         }catch (e: Exception){
             e.printStackTrace()
         }
-        val sdf:String = SimpleDateFormat().format(Date(miliseconds))
-        viewHolder.date.text = sdf
-
-        //fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-                //SphericalUtil.computeDistanceBetween(adList[position].location, LatLng(location.latitude,location.longitude)).toString()
-
-        //}
+        val dateText:String = SimpleDateFormat().format(Date(miliseconds))
+        viewHolder.date.text = dateText
 
         viewHolder.mainContainer.setOnClickListener {
-
-            var miliseconds: Long = 0
-            try {
-                miliseconds = adList[position].time?.time!!
-            }catch (e: Exception){
-                e.printStackTrace()
-            }
-            val adDate:String = SimpleDateFormat().format(Date(miliseconds))
 
             val detailIntent: Intent = Intent(context,AdDetailActivity::class.java)
             detailIntent.putExtra("title", adList[position].title)
             detailIntent.putExtra("desc",adList[position].desc)
-            detailIntent.putExtra("timestamp",adDate)
+            detailIntent.putExtra("timestamp",dateText)
             detailIntent.putExtra("category",adList[position].category)
             detailIntent.putExtra("payment",adList[position].payment)
             detailIntent.putExtra("img",adList[position].img)
@@ -101,15 +77,15 @@ class AdViewAdapter(private var context: Context, list: ArrayList<Advertisement>
 
     }
 
-    public override fun getItemId(position: Int): Long {
+    override fun getItemId(position: Int): Long {
         return position.toLong()
     }
 
-    public override fun getItemViewType(position: Int): Int {
+   override fun getItemViewType(position: Int): Int {
         return position
     }
 
-    public override fun setHasStableIds(hasStableIds: Boolean) {
+    override fun setHasStableIds(hasStableIds: Boolean) {
         super.setHasStableIds(hasStableIds)
     }
 
@@ -117,9 +93,6 @@ class AdViewAdapter(private var context: Context, list: ArrayList<Advertisement>
 
         val layoutInflater: LayoutInflater = LayoutInflater.from(context)
         val view = layoutInflater.inflate(R.layout.advertisement_row_item,p0,false)
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-
 
         return MyViewHolder(view)
     }
@@ -142,6 +115,41 @@ class AdViewAdapter(private var context: Context, list: ArrayList<Advertisement>
 
         override fun onClick(p0: View?) {
 
+        }
+
+    }
+
+    override fun getFilter(): Filter {
+        return searchFilter
+    }
+
+    private val searchFilter = object : Filter() {
+        override fun performFiltering(constraints: CharSequence?): FilterResults {
+
+            val filteredList = ArrayList<Advertisement>()
+            if(constraints == null || constraints.isEmpty() || constraints == ""){
+                filteredList.addAll(searchList)
+            }else {
+                val filterPattern = constraints.toString().toLowerCase().trim()
+
+                for(item in searchList){
+                    if(item.title.toLowerCase().contains(filterPattern)){
+                        filteredList.add(item)
+                    }
+                }
+            }
+
+            val results = FilterResults()
+            results.values = filteredList
+
+            return results
+        }
+
+        override fun publishResults(constraints: CharSequence?, results: FilterResults?) {
+
+            adList.clear()
+            adList.addAll(results?.values as List<Advertisement>)
+            notifyDataSetChanged()
         }
 
     }

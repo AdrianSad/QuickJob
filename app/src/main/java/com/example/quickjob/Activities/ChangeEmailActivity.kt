@@ -3,7 +3,6 @@ package com.example.quickjob.Activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
@@ -11,7 +10,6 @@ import com.example.quickjob.R
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.UserProfileChangeRequest
 
 class ChangeEmailActivity : AppCompatActivity() {
 
@@ -26,7 +24,7 @@ class ChangeEmailActivity : AppCompatActivity() {
 
         val emailField = findViewById<TextInputLayout>(R.id.change_email_field)
         val emailText = findViewById<TextInputEditText>(R.id.change_email_text)
-        findViewById<Toolbar>(R.id.change_email_toolbar).let {
+        findViewById<Toolbar>(R.id.change_title_toolbar).let {
             setSupportActionBar(it)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
             supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -55,7 +53,7 @@ class ChangeEmailActivity : AppCompatActivity() {
     private fun isEmailCorrect(email: String, registerEmailField: TextInputLayout): Boolean {
         when {
             email.isEmpty() -> {
-                registerEmailField.error = "Field can't be empty!"
+                registerEmailField.error = R.string.empty_field_error_message.toString()
                 return false
             }
             !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {

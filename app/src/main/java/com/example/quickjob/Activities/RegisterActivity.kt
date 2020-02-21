@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Toast
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+import com.example.quickjob.ConstantValues.Constants
 import com.example.quickjob.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -56,50 +57,34 @@ class RegisterActivity : AppCompatActivity() {
                 auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener {
 
                     if(it.isSuccessful){
-
                         val user = auth.currentUser
-
                         val profileUpdates = UserProfileChangeRequest.Builder()
                             .setDisplayName(name)
                             .build()
 
-                        val data : HashMap<String,Any> = hashMapOf("name" to name)
-                        firebaseFirestore.collection("users").document(user?.uid.toString()).set(data).addOnSuccessListener{
-
+                        val data : HashMap<String,Any> = hashMapOf(Constants.USER_NAME to name)
+                        firebaseFirestore.collection(Constants.USERS_PATH).document(user?.uid.toString()).set(data).addOnSuccessListener{
                             user?.updateProfile(profileUpdates)?.addOnCompleteListener{task ->
 
                             if(task.isSuccessful){
-
                                 val loginIntent = Intent(applicationContext,LoginActivity::class.java)
                                 startActivity(loginIntent)
-
-
                             }else{
-
                                 Toast.makeText(applicationContext,"Register error : " + task.exception,Toast.LENGTH_SHORT).show()
                                 btn.revertAnimation()
-
-
                             }
                         }
                         }
-
                     }else{
-
                         Toast.makeText(applicationContext,"Register error : " + it.exception,Toast.LENGTH_SHORT).show()
                         btn.revertAnimation()
-
-
                     }
                 }
-
             }else{
                 btn.revertAnimation()
             }
         }
-
         btn.setOnClickListener(listener)
-
         loginBtn.setOnClickListener {
             val loginIntent: Intent = Intent(applicationContext,LoginActivity::class.java)
             startActivity(loginIntent)
@@ -112,11 +97,11 @@ class RegisterActivity : AppCompatActivity() {
 private fun isPasswordCorrect(password: String, registerPasswordField: TextInputLayout): Boolean {
     when {
         password.isEmpty() -> {
-            registerPasswordField.error = "Field can't be empty!"
+            registerPasswordField.error = R.string.empty_field_error_message.toString()
             return false
         }
         password.length < 4 -> {
-            registerPasswordField.error = "Password is too short!"
+            registerPasswordField.error = R.string.password_field_error_message.toString()
             return false
         }
         else -> registerPasswordField.error = null
@@ -127,15 +112,14 @@ private fun isPasswordCorrect(password: String, registerPasswordField: TextInput
     private fun isEmailCorrect(email: String, registerEmailField: TextInputLayout): Boolean {
         when {
             email.isEmpty() -> {
-                registerEmailField.error = "Field can't be empty!"
+                registerEmailField.error = R.string.empty_field_error_message.toString()
                 return false
             }
             !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
-                registerEmailField.error = "Insert proper email address!"
+                registerEmailField.error = R.string.email_fiel_error_message.toString()
                 return false
             }
             else -> registerEmailField.error = null
-
         }
         return true
     }
@@ -144,14 +128,12 @@ private fun isPasswordCorrect(password: String, registerPasswordField: TextInput
 
         when {
             text.isEmpty() -> {
-                field.error = "Field can't be empty!"
+                field.error = R.string.empty_field_error_message.toString()
                 return false
             }
             else -> field.error = null
         }
         return true
-
-        //TODO: Dodac error czy jest juz w bazie danych
     }
 
     override fun onStart() {

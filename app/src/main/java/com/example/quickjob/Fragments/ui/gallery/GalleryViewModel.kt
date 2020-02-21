@@ -1,4 +1,4 @@
-package com.example.quickjob.Activities.ui.gallery
+package com.example.quickjob.Fragments.ui.gallery
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

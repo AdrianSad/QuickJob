@@ -14,10 +14,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.quickjob.Activities.HomeActivity
 import com.example.quickjob.Activities.SetupActivity
 import com.example.quickjob.Adapters.AdViewAdapter
 import com.example.quickjob.Adapters.ProfileAdViewAdapter
 import com.example.quickjob.Classes.Advertisement
+import com.example.quickjob.ConstantValues.Constants
 
 import com.example.quickjob.R
 import com.google.firebase.auth.FirebaseAuth
@@ -29,12 +31,12 @@ import de.hdodenhof.circleimageview.CircleImageView
  */
 class SetupFragment : Fragment() {
 
-    lateinit var firebaseAuth: FirebaseAuth
-    lateinit var firebaseFirestore: FirebaseFirestore
-    lateinit var desc: TextView
-    lateinit var email: TextView
-    lateinit var name: TextView
-    lateinit var img: CircleImageView
+    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var firebaseFirestore: FirebaseFirestore
+    private lateinit var desc: TextView
+    private lateinit var email: TextView
+    private lateinit var name: TextView
+    private lateinit var img: CircleImageView
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
@@ -44,18 +46,24 @@ class SetupFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_setup, container, false)
+
+        initVariables(view)
+        initializeList(view)
+
+        return view
+    }
+
+    private fun initVariables(view: View) {
         img = view.findViewById(R.id.setup_img)
-        val editBtn = view.findViewById<Button>(R.id.setup_edit_btn)
         name = view.findViewById(R.id.setup_name)
-        email= view.findViewById(R.id.setup_email)
+        email = view.findViewById(R.id.setup_email)
         desc = view.findViewById(R.id.setup_desc)
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseFirestore = FirebaseFirestore.getInstance()
-
         viewManager = LinearLayoutManager(view.context)
-        viewAdapter = ProfileAdViewAdapter(view.context,arr)
+        viewAdapter = ProfileAdViewAdapter(view.context, arr)
+        (activity as HomeActivity).hideFloatingActionButton()
 
         recyclerView = view.findViewById<RecyclerView>(R.id.setup_recyclerView).apply {
             setHasFixedSize(true)
@@ -63,23 +71,11 @@ class SetupFragment : Fragment() {
             adapter = viewAdapter
         }
 
-        firebaseFirestore.collection("users").document(firebaseAuth.currentUser?.uid.toString()).collection("posts").get().addOnSuccessListener { documents ->
-
-            for(document in documents){
-
-                val item = document.toObject(Advertisement::class.java)
-                arr.add(item)
-                viewAdapter.notifyDataSetChanged()
-            }
-        }.addOnFailureListener {
-            Toast.makeText(view.context,"Retrieve post error : $it", Toast.LENGTH_LONG).show()
-        }
-        
-        editBtn.setOnClickListener { 
+        val editBtn = view.findViewById<Button>(R.id.setup_edit_btn)
+        editBtn.setOnClickListener {
             val setupIntent : Intent = Intent(view.context,SetupActivity::class.java)
             startActivity(setupIntent)
         }
-        return view
     }
 
     override fun onResume() {
@@ -94,16 +90,29 @@ class SetupFragment : Fragment() {
             name.text = currentUser.displayName
             email.text = currentUser.email
 
-            firebaseFirestore.collection("users").document(currentUser.uid).get().addOnSuccessListener {
+            firebaseFirestore.collection(Constants.USERS_PATH).document(currentUser.uid).get().addOnSuccessListener {
 
                 if(it != null) {
-                    if(it.data?.getValue("desc") != null){
-                        desc.text = it.data!!.getValue("desc").toString()
+                    if(it.data?.getValue(Constants.DESCRIPTION) != null){
+                        desc.text = it.data!!.getValue(Constants.DESCRIPTION).toString()
                     }
                 }
             }
         }
     }
 
+    private fun initializeList(view : View){
+        firebaseFirestore.collection(Constants.USERS_PATH).document(firebaseAuth.currentUser?.uid.toString()).collection(Constants.POSTS_PATH).get().addOnSuccessListener { documents ->
+
+            for(document in documents){
+
+                val item = document.toObject(Advertisement::class.java)
+                arr.add(item)
+                viewAdapter.notifyDataSetChanged()
+            }
+        }.addOnFailureListener {
+            Toast.makeText(view.context,"Retrieve post error : $it", Toast.LENGTH_LONG).show()
+        }
+    }
 
 }

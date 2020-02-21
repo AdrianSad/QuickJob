@@ -50,18 +50,13 @@ class ChangePasswordActivity : AppCompatActivity() {
                             if (it.isSuccessful) {
                                 finish()
                             } else {
-                                Toast.makeText(
-                                    applicationContext,
-                                    "Change password error : ${it.exception}",
-                                    Toast.LENGTH_SHORT
-                                ).show()
                                 btn.revertAnimation()
 
                             }
                         }
                 } else {
 
-                    confField.error = "Passwords must be the same"
+                    confField.error = R.string.password_diff_error_message.toString()
                     btn.revertAnimation()
 
                 }
@@ -73,11 +68,11 @@ class ChangePasswordActivity : AppCompatActivity() {
     private fun isPasswordCorrect(password: String, registerPasswordField: TextInputLayout): Boolean {
         when {
             password.isEmpty() -> {
-                registerPasswordField.error = "Field can't be empty!"
+                registerPasswordField.error = R.string.empty_field_error_message.toString()
                 return false
             }
             password.length < 4 -> {
-                registerPasswordField.error = "Password is too short!"
+                registerPasswordField.error = R.string.password_field_error_message.toString()
                 return false
             }
             else -> registerPasswordField.error = null

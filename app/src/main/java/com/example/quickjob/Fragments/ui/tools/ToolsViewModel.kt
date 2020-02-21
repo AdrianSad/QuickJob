@@ -1,13 +1,13 @@
-package com.example.quickjob.Activities.ui.share
+package com.example.quickjob.Fragments.ui.tools
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class ShareViewModel : ViewModel() {
+class ToolsViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is share Fragment"
+        value = "This is tools Fragment"
     }
     val text: LiveData<String> = _text
 }

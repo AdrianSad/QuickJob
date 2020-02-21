@@ -9,6 +9,27 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
+    <!-- ERRORS MESSAGES -->
+    <string name="empty_field_error_message">"Field can't be empty!"</string>
+    <string name="description_field_error_message">"Description is too long!"</string>
+    <string name="title_field_error_message">Title is too long!</string>
+    <string name="password_field_error_message">"Password is too short!"</string>
+    <string name="password_diff_error_message">"Passwords must be the same"</string>
+    <string name="not_logged_in">"You have to be logged in"</string>
+    <string name="email_fiel_error_message">"Insert proper email address!"</string>
+    <string name="text_length_error_message">"Text is too long!"</string>
+
+    <!-- FIELD HINT -->
+    <string name="money_field_hint">"Write how much money you are able to spend"</string>
+    <string name="other_field_hint">"How would you like to reward other person ?"</string>
+    <string name="delete_hint">"Are you sure you want to delete this post?"</string>
+    <string name="sign_in">Sign in</string>
+    <string name="edit_ad_title">Which field do you want to edit?</string>
+
+    <!-- BUTTONS -->
+    <string name="yes_btn">Yes</string>
+    <string name="no_btn">No</string>
+
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_map">Map</string>
@@ -17,6 +38,15 @@
     <string name="menu_logout">Log Out</string>
     <string name="menu_setup">Profile</string>
 
+    <!-- ARRAYS -->
+    <string-array name="edit_ad_array">
+        <item>Title</item>
+        <item>Description</item>
+        <item>Image</item>
+        <item>Category</item>
+        <item>Location</item>
+        <item>Payment</item>
+    </string-array>
 
     <string-array name="categories">
         <item>Choose a category</item>
@@ -33,4 +63,53 @@
     <string name="Complete">Complete</string>
     <string name="Error">Error</string>
     <string name="Upload">Upload</string>
+    <string name="activity_edit_title_toolbar">Change Title</string>
+    <string name="activity_edit_title_hint">Change post\'s title</string>
+    <string name="activity_edit_desc_toolbar">Change Description</string>
+    <string name="activity_edit_desc_hint">Change post\'s description</string>
+    <string name="activity_edit_category_toolbar">Change Category</string>
+    <string name="activity_edit_image_toolbar">Change Image</string>
+    <string name="activity_edit_location_toolbar">Change Location</string>
+    <string name="activity_edit_payment_toolbar">Change Payment</string>
+    <string name="text_hint_payment">Payment for work</string>
+    <string name="radio_btn_money">Money</string>
+    <string name="radio_btn_sth_else">Something else</string>
+    <string name="hint_payment_method">Payment method:</string>
+    <string name="hint_location">Location</string>
+    <string name="hint_title">Your advertisement\'s title</string>
+    <string name="location_text_info">Click the icon to run place picker. Otherwise your marker will not show on map.</string>
+    <string name="hint_desc">Write interesting description</string>
+    <string name="new_ad_btn">Done</string>
+    <string name="ad_detail_send_message_btn">Send message</string>
+    <string name="ad_detail_phone_btn">Phone</string>
+    <string name="payment_text">Payment</string>
+    <string name="location_text">Location</string>
+    <string name="change_email">Change email</string>
+    <string name="new_email_hint">Insert your new email here</string>
+    <string name="change_password">Change password</string>
+    <string name="present_password_hint">Your present password</string>
+    <string name="new_password_hint">New password</string>
+    <string name="confirm_new_password_hint">Confirm new password</string>
+    <string name="next_btn">Next</string>
+    <string name="get_started_btn">Get Started</string>
+    <string name="log_in_btn">Log in</string>
+    <string name="login_password_hint">Insert your account\'s password</string>
+    <string name="sign_in_email_hint">Sign in with your email</string>
+    <string name="create_new_account_btn">Create new account</string>
+    <string name="forgot_password_btn">Forgot password?</string>
+    <string name="no_thanks_btn">No thanks</string>
+    <string name="your_name_hint">Your name</string>
+    <string name="sign_up_email_hint">Sign up with your email</string>
+    <string name="register_password_hint">Secure your account with strong password</string>
+    <string name="register_btn">Register</string>
+    <string name="already_registered_btn">Already registered ?</string>
+    <string name="change_name">Change name</string>
+    <string name="submit_btn">Submit</string>
+    <string name="description_hint">Description</string>
+    <string name="something_about_you">Something about you:</string>
+    <string name="it_s_empty">it\'s empty !</string>
+    <string name="account_settings_btn">Account Settings</string>
+    <string name="your_advertisements_hint">Your advertisements :</string>
+    <string name="edit_btn">Edit</string>
+    <string name="delete_btn">Delete</string>
 </resources>

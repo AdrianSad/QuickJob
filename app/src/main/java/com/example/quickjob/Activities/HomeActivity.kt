@@ -4,39 +4,29 @@ import android.app.Activity
 import android.app.ActivityOptions
 import android.content.Intent
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
-import android.transition.Explode
 import android.view.*
-import android.view.inputmethod.EditorInfo
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import androidx.navigation.findNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
-import androidx.core.view.GravityCompat
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import android.widget.ImageView
-import android.widget.SearchView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import com.bumptech.glide.Glide
-import com.example.quickjob.Activities.ui.home.HomeFragment
+import com.example.quickjob.ConstantValues.Constants
 import com.example.quickjob.R
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.activity_setup.*
-import java.util.*
 
 class HomeActivity : AppCompatActivity(){
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var mAuth: FirebaseAuth
+    private lateinit var fabBtn: FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,42 +34,18 @@ class HomeActivity : AppCompatActivity(){
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_home)
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
-
-// Check if we're running on Android 5.0 or higher
-    /*    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            with(window){
-                exitTransition = Explode()
-            }
-        } else {
-            // Swap without transition
-        }*/
-        mAuth = FirebaseAuth.getInstance()
-        val currentuser = mAuth.currentUser
-
-        val fab: FloatingActionButton = findViewById(R.id.fab)
-        fab.setOnClickListener {
-            if(currentuser != null) {
-                val newAdIntent = Intent(applicationContext, NewAdActivity::class.java)
-                startActivity(
-                    newAdIntent,
-                    ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
-                )
-            }else {
-                showSnackBar(this,"You have to be logged in")
-            }
-        }
-
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        mAuth = FirebaseAuth.getInstance()
+        val currentuser = mAuth.currentUser
 
+
+        setSupportActionBar(toolbar)
+        currentuser?.let { createFab(it) }
         refreshNavHeader(navView)
-
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -94,11 +60,25 @@ class HomeActivity : AppCompatActivity(){
 
         if(currentuser == null) {
             val loginItem: MenuItem = navView.menu.findItem(R.id.nav_logout)
-            loginItem.setTitle("Sign in")
+            loginItem.title = R.string.sign_in.toString()
 
             val profileItem: MenuItem = navView.menu.findItem(R.id.nav_setup)
             profileItem.isVisible = false
 
+        }
+    }
+    private fun createFab(currentUser: FirebaseUser){
+        fabBtn= findViewById(R.id.fab)
+        fabBtn.setOnClickListener {
+            if(currentUser != null) {
+                val newAdIntent = Intent(applicationContext, NewAdActivity::class.java)
+                startActivity(
+                    newAdIntent,
+                    ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+                )
+            }else {
+                showSnackBar(this,R.string.not_logged_in.toString())
+            }
         }
     }
 
@@ -134,39 +114,10 @@ class HomeActivity : AppCompatActivity(){
         }
     }
 
-    fun signOut(item: MenuItem){
-        if(mAuth.currentUser != null){
-            mAuth.signOut()
-        }
-            val newAdIntent = Intent(applicationContext,LoginActivity::class.java)
-            startActivity(newAdIntent)
-
-    }
-
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
-
-    /*override fun onNavigationItemSelected(p0: MenuItem): Boolean {
-
-        if(p0.itemId == R.id.nav_logout){
-
-            if(mAuth.currentUser != null){
-                mAuth.signOut()
-                Toast.makeText(applicationContext,"Log out",Toast.LENGTH_LONG).show()
-            }
-            else{
-                val newAdIntent = Intent(applicationContext,LoginActivity::class.java)
-                startActivity(newAdIntent)
-            }
-
-        }
-
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        drawerLayout.closeDrawer(GravityCompat.START)
-        return true
-    }*/
 
     override fun onResumeFragments() {
         super.onResumeFragments()
@@ -177,23 +128,28 @@ class HomeActivity : AppCompatActivity(){
     private fun showSnackBar(activity: Activity, message: String, action: String? = null,
                              actionListener: View.OnClickListener? = null, duration: Int = Snackbar.LENGTH_SHORT) {
         val snackBar = Snackbar.make(activity.findViewById(android.R.id.content), message, duration)
-        snackBar.view.setBackgroundColor(Color.parseColor("#CC000000")) // todo update your color
+        snackBar.view.setBackgroundColor(Color.parseColor(Constants.SNACKBAR_COLOR))
         snackBar.setActionTextColor(Color.WHITE)
         if (action != null && actionListener!=null) {
             snackBar.setAction(action, actionListener)
         }
         snackBar.show()
     }
-/*override fun onStart() {
-    super.onStart()
 
-    val currentUser = mAuth.currentUser
+    fun signOut(){
+        if(mAuth.currentUser != null){
+            mAuth.signOut()
+        }
+        val newAdIntent = Intent(applicationContext,LoginActivity::class.java)
+        startActivity(newAdIntent)
 
-    if(currentUser == null){
-        val login = Intent(applicationContext,LoginActivity::class.java)
-        startActivity(login)
     }
-}*/
 
+    fun hideFloatingActionButton(){
+        fabBtn.hide()
+    }
 
+    fun showFloatingActionButton(){
+        fabBtn.show()
+    }
 }

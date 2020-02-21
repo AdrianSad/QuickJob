@@ -19,13 +19,14 @@ import com.example.quickjob.R
 
 class IntroActivity : AppCompatActivity() {
 
-    lateinit var screenPager: ViewPager
-    lateinit var introViewPagerAdapter: IntroViewPagerAdapter
-    lateinit var tabIndicator: TabLayout
-    lateinit var nextBtn: Button
-    var position: Int = 0
-    lateinit var startBtn: Button
-    lateinit var btnAnim : Animation
+    private lateinit var screenPager: ViewPager
+    private lateinit var introViewPagerAdapter: IntroViewPagerAdapter
+    private lateinit var tabIndicator: TabLayout
+    private lateinit var nextBtn: Button
+    private var position: Int = 0
+    private lateinit var startBtn: Button
+    private lateinit var btnAnim : Animation
+    private lateinit var mainActivity: Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,25 +35,7 @@ class IntroActivity : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_intro)
 
-        // Full window i ukrycie action bar
-
-        supportActionBar?.hide()
-
-        val mainActivity: Intent = Intent(applicationContext,HomeActivity::class.java)
-
-        /*if(restorePrefData()){
-
-            startActivity(mainActivity)
-            finish()
-
-        }*/
-
-        startBtn = findViewById(R.id.intro_start_btn)
-        nextBtn = findViewById(R.id.intro_btn)
-        tabIndicator = this.findViewById(R.id.tab_indicator)
-        screenPager = findViewById(R.id.intro_viewPager)
-        btnAnim = AnimationUtils.loadAnimation(applicationContext,R.anim.button_animation)
-
+        initVariables()
 
         //Dodanie elementow do listy
 
@@ -62,35 +45,27 @@ class IntroActivity : AppCompatActivity() {
             ScreenItem("Various payment","",R.drawable.img3)
         )
 
-
         introViewPagerAdapter = IntroViewPagerAdapter(this,mList)
-
         screenPager.adapter = introViewPagerAdapter
-
         tabIndicator.setupWithViewPager(screenPager)
 
 
         nextBtn.setOnClickListener{
-
             position = screenPager.currentItem
 
             if(position < mList.size){
-
                 position++
                 screenPager.setCurrentItem(position)
             }
-
             // Kiedy przejdziemy na ostatnia strone
 
             if(position == mList.size-1){
-
                 loadLastScreen()
             }
 
         }
 
         startBtn.setOnClickListener{
-
             startActivity(mainActivity)
             savePrefsData()
             finish()
@@ -99,15 +74,11 @@ class IntroActivity : AppCompatActivity() {
 
         tabIndicator.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
             override fun onTabReselected(p0: TabLayout.Tab?) {
-
             }
-
             override fun onTabUnselected(p0: TabLayout.Tab?) {
-
             }
 
             override fun onTabSelected(p0: TabLayout.Tab?) {
-
                 if(p0?.position == mList.size -1){
 
                     loadLastScreen()
@@ -118,6 +89,17 @@ class IntroActivity : AppCompatActivity() {
 
         )
 
+    }
+
+    private fun initVariables() {
+        supportActionBar?.hide()
+
+        mainActivity = Intent(applicationContext, HomeActivity::class.java)
+        startBtn = findViewById(R.id.intro_start_btn)
+        nextBtn = findViewById(R.id.intro_btn)
+        tabIndicator = this.findViewById(R.id.tab_indicator)
+        screenPager = findViewById(R.id.intro_viewPager)
+        btnAnim = AnimationUtils.loadAnimation(applicationContext, R.anim.button_animation)
     }
 
     private fun restorePrefData(): Boolean {

@@ -7,7 +7,7 @@
         tools:context=".Activities.ChangeEmailActivity">
 
     <androidx.appcompat.widget.Toolbar
-            android:id="@+id/change_email_toolbar"
+            android:id="@+id/change_title_toolbar"
             android:layout_width="0dp"
             app:title="Change Email"
             android:background="@color/colorPrimary"
@@ -26,13 +26,13 @@
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView2"
-            app:layout_constraintTop_toBottomOf="@+id/change_email_toolbar">
+            app:layout_constraintTop_toBottomOf="@+id/change_title_toolbar">
 
         <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/change_email_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Insert your new email here" />
+                android:hint="@string/new_email_hint" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <ImageView
@@ -42,7 +42,7 @@
             android:layout_marginTop="32dp"
             android:tint="@color/colorPrimary"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/change_email_toolbar"
+            app:layout_constraintTop_toBottomOf="@+id/change_title_toolbar"
             app:srcCompat="@drawable/ic_email_white_24dp" />
 
     <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
@@ -52,7 +52,7 @@
             android:layout_marginBottom="32dp"
             android:background="@drawable/btn_style"
             android:padding="16dp"
-            android:text="Change email"
+            android:text="@string/change_email"
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

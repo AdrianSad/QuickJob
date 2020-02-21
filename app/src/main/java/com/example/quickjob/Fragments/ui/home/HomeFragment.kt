@@ -1,29 +1,27 @@
-package com.example.quickjob.Activities.ui.home
+package com.example.quickjob.Fragments.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.quickjob.Activities.HomeActivity
 import com.example.quickjob.Adapters.AdViewAdapter
 import com.example.quickjob.Classes.Advertisement
+import com.example.quickjob.ConstantValues.Constants
 import com.example.quickjob.R
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QueryDocumentSnapshot
 
 class HomeFragment : Fragment() {
 
-   // private lateinit var homeViewModel: HomeViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: AdViewAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
-    private  var arr = ArrayList<Advertisement>()
-    private  var temp = ArrayList<Advertisement>()
+    private var arr = ArrayList<Advertisement>()
+    private var temp = ArrayList<Advertisement>()
     private lateinit var firebaseFirestore: FirebaseFirestore
 
     override fun onCreateView(
@@ -33,11 +31,10 @@ class HomeFragment : Fragment() {
     ): View? {
 
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-
+        (activity as HomeActivity).showFloatingActionButton()
         firebaseFirestore = FirebaseFirestore.getInstance()
-
         viewManager = LinearLayoutManager(root.context)
-        viewAdapter = AdViewAdapter(root.context,arr)
+        viewAdapter = AdViewAdapter(root.context, arr)
         viewAdapter.setHasStableIds(true)
 
         recyclerView = root.findViewById<RecyclerView>(R.id.home_recyclerView).apply {
@@ -45,39 +42,37 @@ class HomeFragment : Fragment() {
             layoutManager = viewManager
             adapter = viewAdapter
         }
-
         setSearchArr()
-
         return root
     }
 
     override fun onResume() {
         super.onResume()
 
-        firebaseFirestore.collection("posts").addSnapshotListener{snapshots, exception ->
+        firebaseFirestore.collection(Constants.POSTS_PATH)
+            .addSnapshotListener { snapshots, exception ->
 
-            if(exception != null){
-                return@addSnapshotListener
-            }
-            for(dc in snapshots!!.documentChanges){
-                if (dc.type == DocumentChange.Type.ADDED) {
-                    val newItem = dc.document.toObject(Advertisement::class.java)
+                if (exception != null) {
+                    return@addSnapshotListener
+                }
+                arr.clear()
+                for (dc in snapshots!!.documentChanges) {
+                    if (dc.type == DocumentChange.Type.ADDED) {
+                        val newItem = dc.document.toObject(Advertisement::class.java)
                         arr.add(newItem)
                         viewAdapter.notifyDataSetChanged()
 
+                    }
                 }
             }
-        }
-
-
     }
 
-    fun setSearchArr(){
+    private fun setSearchArr() {
 
-        firebaseFirestore.collection("posts").get().addOnCompleteListener { task ->
+        firebaseFirestore.collection(Constants.POSTS_PATH).get().addOnCompleteListener { task ->
 
-            if(task.isSuccessful){
-                for(document in task.result?.documents!!) {
+            if (task.isSuccessful) {
+                for (document in task.result?.documents!!) {
                     val item = document.toObject(Advertisement::class.java)
                     if (item != null) {
                         temp.add(item)

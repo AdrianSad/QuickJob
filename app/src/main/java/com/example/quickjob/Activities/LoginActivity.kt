@@ -17,11 +17,11 @@ import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
 
-    lateinit var auth: FirebaseAuth
-    lateinit var emailField: TextInputLayout
-    lateinit var passwordField: TextInputLayout
-    lateinit var emailText: TextInputEditText
-    lateinit var passwordText: TextInputEditText
+    private lateinit var auth: FirebaseAuth
+    private lateinit var emailField: TextInputLayout
+    private lateinit var passwordField: TextInputLayout
+    private lateinit var emailText: TextInputEditText
+    private lateinit var passwordText: TextInputEditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,28 +31,19 @@ class LoginActivity : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_login)
 
-        auth = FirebaseAuth.getInstance()
+
 
         val createAccBtn: Button = findViewById(R.id.login_btn_register)
-        val loginBtn: CircularProgressButton = findViewById(R.id.login_btn)
         val forgotPassBtn: Button = findViewById(R.id.login_btn_forgot)
         val skipBtn: Button = findViewById(R.id.login_btn_skip)
-
-        emailField = findViewById(R.id.login_email_field)
-        passwordField = findViewById(R.id.change_password_new_field)
-
-        emailText = findViewById(R.id.login_email_field_text)
-        passwordText = findViewById(R.id.change_password_new_text)
-
+        initVariables()
 
         createAccBtn.setOnClickListener {
-
             val register = Intent(applicationContext,RegisterActivity::class.java)
             startActivity(register)
         }
 
         skipBtn.setOnClickListener{
-
             val homeIntent = Intent(applicationContext,HomeActivity::class.java)
             startActivity(homeIntent)
         }
@@ -61,40 +52,37 @@ class LoginActivity : AppCompatActivity() {
             TODO: dodac aktywnosc
         }*/
 
-        loginBtn.setOnClickListener {
+        loginButton()
+    }
 
+    private fun loginButton() {
+        val loginBtn: CircularProgressButton = findViewById(R.id.login_btn)
+        loginBtn.setOnClickListener {
             val email = emailText.text.toString()
             val password = passwordText.text.toString()
-
             loginBtn.startAnimation()
 
-            if(isEmailCorrect(email,emailField) && isPasswordCorrect(password,passwordField)){
-
-                auth.signInWithEmailAndPassword(email,password).addOnCompleteListener {
-
-                    if(it.isSuccessful){
-
-                        val home = Intent(applicationContext,HomeActivity::class.java)
+            if (isEmailCorrect(email, emailField) && isPasswordCorrect(password, passwordField)) {
+                auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        val home = Intent(applicationContext, HomeActivity::class.java)
                         startActivity(home)
-
-                    }else {
-
-                        Toast.makeText(applicationContext,"Login error : " + it.exception,
-                            Toast.LENGTH_SHORT).show()
+                    } else {
                         loginBtn.revertAnimation()
-
                     }
-
-
                 }
-
-            }else {
+            } else {
                 loginBtn.revertAnimation()
             }
-
         }
+    }
 
-
+    private fun initVariables() {
+        auth = FirebaseAuth.getInstance()
+        emailField = findViewById(R.id.login_email_field)
+        passwordField = findViewById(R.id.change_password_new_field)
+        emailText = findViewById(R.id.login_email_field_text)
+        passwordText = findViewById(R.id.change_password_new_text)
     }
 
     override fun onStart() {
@@ -111,11 +99,11 @@ class LoginActivity : AppCompatActivity() {
     private fun isPasswordCorrect(password: String, registerPasswordField: TextInputLayout): Boolean {
         when {
             password.isEmpty() -> {
-                registerPasswordField.error = "Field can't be empty!"
+                registerPasswordField.error = R.string.empty_field_error_message.toString()
                 return false
             }
             password.length < 4 -> {
-                registerPasswordField.error = "Password is too short!"
+                registerPasswordField.error = R.string.password_field_error_message.toString()
                 return false
             }
             else -> registerPasswordField.error = null
@@ -126,11 +114,11 @@ class LoginActivity : AppCompatActivity() {
     private fun isEmailCorrect(email: String, registerEmailField: TextInputLayout): Boolean {
         when {
             email.isEmpty() -> {
-                registerEmailField.error = "Field can't be empty!"
+                registerEmailField.error = R.string.empty_field_error_message.toString()
                 return false
             }
             !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
-                registerEmailField.error = "Insert proper email address!"
+                registerEmailField.error = R.string.email_fiel_error_message.toString()
                 return false
             }
             else -> registerEmailField.error = null

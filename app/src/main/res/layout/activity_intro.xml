@@ -9,7 +9,7 @@
 android:background="#ffff">
 
     <Button
-            android:text="Next"
+            android:text="@string/next_btn"
             android:drawableTint="@color/gradient_start_color"
             android:textColor="@color/gradient_start_color"
             android:drawableRight="@drawable/ic_arrow_forward_black_24dp"
@@ -45,7 +45,7 @@ android:background="#ffff">
 
     <Button
             android:background="@drawable/btn_gradient_style"
-            android:text="Get Started"
+            android:text="@string/get_started_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/intro_start_btn" android:layout_marginBottom="64dp"

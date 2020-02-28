@@ -3,8 +3,6 @@ package com.example.quickjob.Activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
 import com.example.quickjob.R

@@ -13,7 +13,6 @@ import android.widget.RadioButton
 import com.example.quickjob.Activities.AdDetailActivity
 import com.example.quickjob.ConstantValues.Constants
 import com.example.quickjob.R
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.firestore.FirebaseFirestore

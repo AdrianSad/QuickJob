@@ -8,7 +8,6 @@ import com.google.android.material.textfield.TextInputLayout
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
-import android.widget.ProgressBar
 import android.widget.Toast
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
 import com.example.quickjob.ConstantValues.Constants

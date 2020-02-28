@@ -2,18 +2,10 @@ package com.example.quickjob.Activities
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
-import android.location.Address
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
-import android.text.Editable
 import android.text.InputType
 import android.util.Log
 import android.view.View
@@ -23,7 +15,6 @@ import androidx.appcompat.widget.Toolbar
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
 import com.example.quickjob.ConstantValues.Constants
 import com.example.quickjob.R
-import com.google.android.gms.common.api.Status
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
@@ -36,12 +27,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import com.schibstedspain.leku.*
-import com.schibstedspain.leku.locale.SearchZoneRect
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
-import org.w3c.dom.Text
 import java.lang.Exception
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
 

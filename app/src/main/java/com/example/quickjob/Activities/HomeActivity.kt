@@ -35,16 +35,16 @@ class HomeActivity : AppCompatActivity(){
             WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_home)
 
+        createFab()
+        mAuth = FirebaseAuth.getInstance()
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
-        mAuth = FirebaseAuth.getInstance()
-        val currentuser = mAuth.currentUser
+        val currentUser = mAuth.currentUser
 
 
         setSupportActionBar(toolbar)
-        currentuser?.let { createFab(it) }
         refreshNavHeader(navView)
 
         appBarConfiguration = AppBarConfiguration(
@@ -58,7 +58,7 @@ class HomeActivity : AppCompatActivity(){
         navView.setupWithNavController(navController)
 
 
-        if(currentuser == null) {
+        if(currentUser == null) {
             val loginItem: MenuItem = navView.menu.findItem(R.id.nav_logout)
             loginItem.title = R.string.sign_in.toString()
 
@@ -67,10 +67,10 @@ class HomeActivity : AppCompatActivity(){
 
         }
     }
-    private fun createFab(currentUser: FirebaseUser){
+    private fun createFab(){
         fabBtn= findViewById(R.id.fab)
         fabBtn.setOnClickListener {
-            if(currentUser != null) {
+            if(mAuth.currentUser != null) {
                 val newAdIntent = Intent(applicationContext, NewAdActivity::class.java)
                 startActivity(
                     newAdIntent,
@@ -101,7 +101,7 @@ class HomeActivity : AppCompatActivity(){
             }
         }else{
 
-            userName.text = "Log in to unblock new things!"
+            userName.text = R.string.log_in_hint.toString()
             userEmail.text = ""
             Glide.with(this).load(R.drawable.default_avatar)
                 .into(userImage)
@@ -136,7 +136,7 @@ class HomeActivity : AppCompatActivity(){
         snackBar.show()
     }
 
-    fun signOut(){
+    public fun signOut(view: View){
         if(mAuth.currentUser != null){
             mAuth.signOut()
         }

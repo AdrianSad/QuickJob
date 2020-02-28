@@ -9,7 +9,6 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.ImageView
-import android.widget.Toast
 import com.example.quickjob.Activities.AdDetailActivity
 import com.example.quickjob.ConstantValues.Constants
 import com.example.quickjob.R
@@ -21,8 +20,6 @@ import com.schibstedspain.leku.LATITUDE
 import com.schibstedspain.leku.LOCATION_ADDRESS
 import com.schibstedspain.leku.LONGITUDE
 import com.schibstedspain.leku.LocationPickerActivity
-import com.theartofdev.edmodo.cropper.CropImage
-import java.lang.Exception
 
 class EditLocationActivity : AppCompatActivity() {
 

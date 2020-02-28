@@ -3,8 +3,6 @@ package com.example.quickjob.Adapters
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.media.Image
-import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +16,6 @@ import com.example.quickjob.Activities.AdDetailActivity
 import com.example.quickjob.Classes.Advertisement
 import com.example.quickjob.ConstantValues.Constants
 import com.example.quickjob.R
-import com.google.android.gms.maps.model.LatLng
 import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*

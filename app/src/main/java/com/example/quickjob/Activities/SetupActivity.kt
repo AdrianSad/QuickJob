@@ -5,19 +5,16 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.quickjob.ConstantValues.Constants
 import com.example.quickjob.R
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -25,7 +22,6 @@ import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import de.hdodenhof.circleimageview.CircleImageView
 import java.lang.Exception
-import android.text.Editable as Editable
 
 class SetupActivity : AppCompatActivity() {
 

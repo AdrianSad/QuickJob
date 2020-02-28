@@ -13,10 +13,8 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.quickjob.Activities.HomeActivity
 import com.example.quickjob.Activities.SetupActivity
-import com.example.quickjob.Adapters.AdViewAdapter
 import com.example.quickjob.Adapters.ProfileAdViewAdapter
 import com.example.quickjob.Classes.Advertisement
 import com.example.quickjob.ConstantValues.Constants
@@ -92,8 +90,8 @@ class SetupFragment : Fragment() {
 
             firebaseFirestore.collection(Constants.USERS_PATH).document(currentUser.uid).get().addOnSuccessListener {
 
-                if(it != null) {
-                    if(it.data?.getValue(Constants.DESCRIPTION) != null){
+                if(it != null && it.data != null && it.data!![Constants.DESCRIPTION] != null) {
+                    if(it.data!!.getValue(Constants.DESCRIPTION) != null){
                         desc.text = it.data!!.getValue(Constants.DESCRIPTION).toString()
                     }
                 }

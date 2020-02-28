@@ -29,39 +29,39 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Activities.EditActivities.EditPaymentActivity"></activity>
-        <activity android:name=".Activities.EditActivities.EditLocationActivity" />
-        <activity android:name=".Activities.EditActivities.EditImageActivity" />
-        <activity android:name=".Activities.EditActivities.EditCategoryActivity" />
-        <activity android:name=".Activities.EditActivities.EditDescActivity" />
-        <activity android:name=".Activities.EditActivities.EditTitleActivity" />
-        <activity android:name=".Activities.AdDetailActivity" />
-        <activity android:name=".Activities.ChangePasswordActivity" />
-        <activity android:name=".Activities.ChangeEmailActivity" />
-        <activity android:name=".Activities.SetupActivity" />
+        <activity android:name="com.example.quickjob.Activities.EditActivities.EditPaymentActivity"></activity>
+        <activity android:name="com.example.quickjob.Activities.EditActivities.EditLocationActivity" />
+        <activity android:name="com.example.quickjob.Activities.EditActivities.EditImageActivity" />
+        <activity android:name="com.example.quickjob.Activities.EditActivities.EditCategoryActivity" />
+        <activity android:name="com.example.quickjob.Activities.EditActivities.EditDescActivity" />
+        <activity android:name="com.example.quickjob.Activities.EditActivities.EditTitleActivity" />
+        <activity android:name="com.example.quickjob.Activities.AdDetailActivity" />
+        <activity android:name="com.example.quickjob.Activities.ChangePasswordActivity" />
+        <activity android:name="com.example.quickjob.Activities.ChangeEmailActivity" />
+        <activity android:name="com.example.quickjob.Activities.SetupActivity" />
         <activity
-                android:name=".Activities.NewAdActivity"
+                android:name="com.example.quickjob.Activities.NewAdActivity"
                 android:theme="@style/AppTheme.NoActionBar" />
         <activity
                 android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
                 android:theme="@style/Base.Theme.AppCompat" />
         <activity
-                android:name=".Activities.HomeActivity"
+                android:name="com.example.quickjob.Activities.HomeActivity"
                 android:label="@string/title_activity_home"
                 android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activities.SplashActivity">
+        <activity android:name="com.example.quickjob.Activities.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.LoginActivity" />
-        <activity android:name=".Activities.RegisterActivity" />
+        <activity android:name="com.example.quickjob.Activities.LoginActivity" />
+        <activity android:name="com.example.quickjob.Activities.RegisterActivity" />
         <activity
                 android:name="com.schibstedspain.leku.LocationPickerActivity"
                 android:label="@string/leku_title_activity_location_picker"
-                android:parentActivityName=".Activities.HomeActivity"
+                android:parentActivityName="com.example.quickjob.Activities.HomeActivity"
                 android:theme="@style/AppTheme"
                 android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -73,7 +73,7 @@
                     android:resource="@xml/leku_searchable" />
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".Activities.HomeActivity" />
+                    android:value="com.example.quickjob.Activities.HomeActivity" />
         </activity>
 
         <uses-library
@@ -91,11 +91,11 @@
                 android:name="com.google.android.geo.API_KEY"
                 android:value="@string/google_maps_key" />
 
-        <activity android:name=".Activities.IntroActivity">
+        <activity android:name="com.example.quickjob.Activities.IntroActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>

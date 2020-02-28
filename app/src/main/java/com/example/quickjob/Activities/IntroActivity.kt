@@ -33,6 +33,12 @@ class IntroActivity : AppCompatActivity() {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
+        if(restorePrefData()){
+            val homeActivity = Intent(applicationContext, HomeActivity::class.java)
+            startActivity(homeActivity)
+            finish()
+        }
         setContentView(R.layout.activity_intro)
 
         initVariables()
@@ -40,9 +46,9 @@ class IntroActivity : AppCompatActivity() {
         //Dodanie elementow do listy
 
         val mList: List<ScreenItem> = listOf(
-            ScreenItem("Easy job posting","asdfasdas",R.drawable.img1),
-            ScreenItem("Fast answer and help","benc benc", R.drawable.img2),
-            ScreenItem("Various payment","",R.drawable.img3)
+            ScreenItem("Easy job posting","Just few clicks",R.drawable.img1),
+            ScreenItem("Fast answer and help","Easy contact with another person", R.drawable.img2),
+            ScreenItem("Various payment","You can pay in a variety of ways for example : money, favor, dinner etc.",R.drawable.img3)
         )
 
         introViewPagerAdapter = IntroViewPagerAdapter(this,mList)
